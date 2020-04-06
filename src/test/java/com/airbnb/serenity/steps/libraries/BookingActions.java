@@ -77,7 +77,7 @@ public class BookingActions
        increaseGuests(HomePage.ADULTS_LABEL,options.getAdults());
        increaseGuests(HomePage.CHILDRENS_LABEL,options.getKids());
        clicksOn(HomePage.SAVE_GUESTS_BTN);
-
+       clicksOn(HomePage.SUBMIT_BUTTON);
     }
 
 }

@@ -14,7 +14,7 @@ Feature: Booking
       | adults   | kids   |
       | <adults> | <kids> |
 
-    And John has a requirements for his room "<filter>"
+    And John has a requirements for his room:
       | currency   | min price   | max price   | bathrooms   | additional   |
       | <currency> | <min price> | <max price> | <bathrooms> | <additional> |
 

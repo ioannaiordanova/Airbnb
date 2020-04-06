@@ -10,13 +10,14 @@ import org.openqa.selenium.interactions.Actions;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.time.Month;
+import java.time.Year;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class BaseActions {
- private BasePage currentPage;
+ protected BasePage currentPage;
 
     protected void navigateToURL(){
         currentPage.open();
@@ -224,5 +225,7 @@ public class BaseActions {
     public String formatMonth(Month mon){
         return  mon.getDisplayName(TextStyle.FULL, Locale.ENGLISH);
     }
+
+
 
 }

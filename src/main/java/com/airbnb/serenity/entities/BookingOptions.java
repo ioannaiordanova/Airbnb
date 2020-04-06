@@ -127,5 +127,17 @@ public class BookingOptions {
     public Month getEndOfTripMonth(){
         Month endOfTripMonth = this.getStartDate().getMonth();
         return endOfTripMonth;
+
     }
+
+    public int getDayStartTrip(){
+        int Day = this.getStartDate().getDayOfMonth();
+        return Day;
+    }
+
+    public int getDayEndTrip(){
+        int Day = this.getStartDate().getDayOfMonth();
+        return Day;
+    }
+
 }

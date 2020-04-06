@@ -31,8 +31,9 @@ public class BookingStepsDefinitions {
         bookingOptions.setPlace(place);
         bookingOptions.setStartDate(daysFromNow);
         bookingOptions.setEndDate(daysFromNow,howLong);
-
-
+        dimo.startSearchingWithPlace(bookingOptions);
+        dimo.applyDate(bookingOptions);
+        dimo.applyDate(bookingOptions);
 
     }
 }

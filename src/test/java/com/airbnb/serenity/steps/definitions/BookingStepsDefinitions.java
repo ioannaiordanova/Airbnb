@@ -2,11 +2,17 @@ package com.airbnb.serenity.steps.definitions;
 
 import com.airbnb.serenity.entities.BookingOptions;
 import com.airbnb.serenity.steps.libraries.BookingActions;
+
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import net.thucydides.core.annotations.Steps;
 
 import static com.airbnb.serenity.page_objects.HomePage.*;
+import java.util.List;
+import java.util.Map;
+import static com.airbnb.serenity.utils.SetBookingOptionsByList.prepareBookingOptionsObject;
+
 
 
 public class BookingStepsDefinitions {
@@ -31,15 +37,36 @@ public class BookingStepsDefinitions {
     }
 
 
-    @When("^he has started searching a place to stay in \"([^\"]*)\" for his \"([^\"]*)\"-days trip after \"([^\"]*)\" days$")
-    public void heHasStartedSearchingAPlaceToStayInForHisDaysTripAfterDays(String place, Integer howLong, Integer daysFromNow)  {
-        bookingOptions=new BookingOptions();
+    @When("^he search for a place where to stay in \"([^\"]*)\"$")
+    public void heSearchForAPlaceWhereToStayIn(String place) {
+        bookingOptions = new BookingOptions();
         bookingOptions.setPlace(place);
+
+        dimo.startSearchingWithPlace(bookingOptions.getPlace());
+    }
+
+    @When("^he searching for vacation \"([^\"]*)\"-days trip after \"([^\"]*)\" days$")
+    public void heSearchingForVacationDaysTripAfterDays(Integer howLong, Integer daysFromNow) {
         bookingOptions.setStartDate(daysFromNow);
-        bookingOptions.setEndDate(daysFromNow,howLong);
-        dimo.startSearchingWithPlace(bookingOptions);
-        dimo.applyDate(bookingOptions);
-        dimo.applyDate(bookingOptions);
+        bookingOptions.setEndDate(daysFromNow, howLong);
+        dimo.applyDate(bookingOptions.getStartDate());
+        dimo.applyDate(bookingOptions.getEndDate());
+    }
+
+    @And("^he search for number of people to accompany him:$")
+    public void heSearchForNumberOfPeopleToAccompanyHim(List<BookingOptions> guests) { //List<Map<String,Integer>>
+        bookingOptions.setKids(guests.get(0).getKids());
+        bookingOptions.setAdults(guests.get(0).getAdults());
+
+        dimo.selectAdditionalGuests(bookingOptions);
+
+
+    }
+
+    @And("^John has a requirements for his room:$")
+    public void johnHasARequirementsForHisRoom(List<Map<String,String>> requirements) {
+     bookingOptions= prepareBookingOptionsObject(bookingOptions,requirements);
+
 
     }
 }

@@ -13,13 +13,22 @@ import java.util.List;
 public class HomePage
 extends PageObject {
     //Select localization currency EUR
-    public static final By LOCALIZATION_BTN = By.cssSelector("button._ndgmt0b");
+    public static final By LANGUAGE_AND_CURRENCY_BUTTON = By.cssSelector("button._ndgmt0b");
+    public static final By LANGUAGES_LINK = By.cssSelector("div#simple-header-locale-menu a[href$=language]");
+    public static final By LANGUAGE_US_LINK = By.cssSelector("ul._19s389u li");
+    public static final By CURRENCY_TABLE_LINK = By.cssSelector("div#simple-header-locale-menu a[href$=currency]");
+    public static final By LIST_WITH_CURRENCIES = By.cssSelector("ul._19s389u li button");
+    public static final By EURO_CURRENCIES = By.cssSelector("ul._19s389u li button");
 
     @FindBy (css ="div#simple-header-locale-menu a[href$=currency]")
     public WebElementFacade openCurrencyTableLink;
 
     @FindBy (css = "ul._19s389u li button")
     public List<WebElementFacade> listWithCurrencies;
+
+
+    @FindBy (css = "ul._19s389u li button")
+    public List<WebElementFacade> listWithLanguages;
 
 
     //Search criteria controls

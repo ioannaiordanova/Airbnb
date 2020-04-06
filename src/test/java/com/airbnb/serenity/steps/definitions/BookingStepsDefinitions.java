@@ -2,15 +2,11 @@ package com.airbnb.serenity.steps.definitions;
 
 import com.airbnb.serenity.entities.BookingOptions;
 import com.airbnb.serenity.steps.libraries.BookingActions;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import net.thucydides.core.annotations.Steps;
 
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.format.TextStyle;
-import java.util.Locale;
+import static com.airbnb.serenity.page_objects.HomePage.*;
 
 
 public class BookingStepsDefinitions {
@@ -19,9 +15,19 @@ public class BookingStepsDefinitions {
 
     private BookingOptions bookingOptions;
 
-    @Given("^John was on the popular booking site$")
+    @Given("^(?:.*) is on the popular vacation booking site$")
     public void johnIsOnTheHomePage() {
         dimo.openPage();
+    }
+
+    @Given("^s?he select english language plus currency euro$")
+    public void heSelectCurrencyEuro() {
+        dimo.clicksOn(LANGUAGE_AND_CURRENCY_BUTTON);
+        dimo.clicksOn(LANGUAGES_LINK);
+        dimo.selectLanguage(0);
+
+        dimo.clicksOn(CURRENCY_TABLE_LINK);
+        dimo.clicksOn(LIST_WITH_CURRENCIES);
     }
 
 

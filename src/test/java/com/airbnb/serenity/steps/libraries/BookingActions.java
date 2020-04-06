@@ -12,6 +12,8 @@ import java.time.Month;
 import java.time.format.TextStyle;
 import java.util.Locale;
 
+import static com.airbnb.serenity.page_objects.HomePage.LANGUAGE_US_LINK;
+
 public class BookingActions
     extends BaseActions {
     private HomePage homePage;
@@ -59,6 +61,11 @@ public class BookingActions
             }
         }
     }
+
+    public void selectLanguage(int productNumber) {
+        clicksOn((WebElementFacade) homePage.listWithLanguages.get(productNumber).find(LANGUAGE_US_LINK));
+    }
+
 
 
 }

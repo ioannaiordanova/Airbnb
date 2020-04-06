@@ -3,6 +3,7 @@ package com.airbnb.serenity.steps.definitions;
 import com.airbnb.serenity.entities.BookingOptions;
 import com.airbnb.serenity.steps.libraries.BookingActions;
 import cucumber.api.PendingException;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import net.thucydides.core.annotations.Steps;
@@ -35,5 +36,9 @@ public class BookingStepsDefinitions {
         dimo.applyDate(bookingOptions);
         dimo.applyDate(bookingOptions);
 
+    }
+
+    @And("^added people to accompany him:$")
+    public void addedPeopleToAccompanyHim() {
     }
 }

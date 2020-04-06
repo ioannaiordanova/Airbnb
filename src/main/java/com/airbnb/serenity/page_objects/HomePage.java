@@ -27,6 +27,11 @@ extends PageObject {
 
     public static final By FROM_DATE_INPUT = By.id("checkin_input");
     public static final By TO_DATE_INPUT = By.id("checkout_input");
+
+    public static final By CALENDAR_MONTH_NAME = By.cssSelector("div[class=_1svux14][data-visible=true] ._gucugi strong");
+    public static final By NEXT_MONTH_BUTTON = By.className("_1h5uiygl");
+
+
     @FindBy ( css = "div[class=_1svux14][data-visible=true] table td[aria-disabled=false]")
     public List<WebElementFacade>  tdDatesEnabled;
 

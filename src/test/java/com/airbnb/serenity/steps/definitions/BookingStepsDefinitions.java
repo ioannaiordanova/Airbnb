@@ -26,14 +26,11 @@ public class BookingStepsDefinitions {
         dimo.openPage();
     }
 
-    @Given("^s?he select english language plus currency euro$")
-    public void heSelectCurrencyEuro() {
+    @Given("^s?he select english language plus currency \"([^\"]*)\"$")
+    public void heSelectCurrencyEuro(String currency) {
         dimo.clicksOn(LANGUAGE_AND_CURRENCY_BUTTON);
-        dimo.clicksOn(LANGUAGES_LINK);
-        dimo.selectLanguage(0);
-
         dimo.clicksOn(CURRENCY_TABLE_LINK);
-        dimo.clicksOn(LIST_WITH_CURRENCIES);
+        dimo.setCurrency(currency);
     }
 
 

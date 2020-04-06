@@ -93,45 +93,6 @@ public class BaseActions {
                 .click();
     }
 
-    public void moveToElementAndClicksOnXY(WebElementFacade element, Integer xOffset, Integer yOffset) {
-
-        Actions act = new Actions(currentPage.getDriver());
-        act.moveToElement(element, xOffset, yOffset).click().build().perform();
-
-    }
-
-    public void findLinkByParentAndNameAndClick(By locator, String itemValue) {
-
-        WebElementFacade ulList = currentPage.find(locator);
-        List<WebElementFacade> options = ulList.thenFindAll(By.tagName("a"));
-        for (WebElementFacade option : options) {
-            if (option.getAttribute("Name").equals(itemValue)) {
-                option.click(); // click the desired option
-                break;
-            }
-        }
-
-    }
-
-    public WebElementFacade returnParentWithGivenTag(WebElementFacade child, String parentTag) {
-        By locatorParent = new By.ByXPath("./ancestor::" + parentTag + "[last()]");
-        return child.find(locatorParent);
-    }
-
-    public WebElementFacade getLinkByParentAndVisibleText(By locator, String visibleText) {
-
-        WebElementFacade ulList = currentPage.find(locator);
-        List<WebElementFacade> elements = ulList.thenFindAll(By.tagName("a"));
-        for (WebElementFacade element : elements) {
-            if (element.getText().equalsIgnoreCase(visibleText)) {
-                System.out.println("The element is found " + element.getText());
-                return element;
-            }
-        }
-        System.out.println("The element is not found");
-        return null;
-    }
-
     public String readsTextFrom(By locator) {
         return readsTextFrom((WebElementFacade) currentPage.find(locator));
     }

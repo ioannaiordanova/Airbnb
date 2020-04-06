@@ -11,7 +11,9 @@ import net.thucydides.core.annotations.Steps;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.TextStyle;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 
 public class BookingStepsDefinitions {
@@ -20,25 +22,34 @@ public class BookingStepsDefinitions {
 
     private BookingOptions bookingOptions;
 
-    @Given("^John was on the popular booking site$")
+    @Given("^John is on the popular vacation booking site$")
     public void johnIsOnTheHomePage() {
         dimo.openPage();
     }
 
 
-    @When("^he has started searching a place to stay in \"([^\"]*)\" for his \"([^\"]*)\"-days trip after \"([^\"]*)\" days$")
-    public void heHasStartedSearchingAPlaceToStayInForHisDaysTripAfterDays(String place, Integer howLong, Integer daysFromNow)  {
-        bookingOptions=new BookingOptions();
+    @When("^he search for a place where to stay in \"([^\"]*)\"$")
+    public void heSearchForAPlaceWhereToStayIn(String place) {
+        bookingOptions = new BookingOptions();
         bookingOptions.setPlace(place);
-        bookingOptions.setStartDate(daysFromNow);
-        bookingOptions.setEndDate(daysFromNow,howLong);
-        dimo.startSearchingWithPlace(bookingOptions);
-        dimo.applyDate(bookingOptions);
-        dimo.applyDate(bookingOptions);
 
+        dimo.startSearchingWithPlace(bookingOptions.getPlace());
     }
 
-    @And("^added people to accompany him:$")
-    public void addedPeopleToAccompanyHim() {
+    @When("^he searching for vacation \"([^\"]*)\"-days trip after \"([^\"]*)\" days$")
+    public void heSearchingForVacationDaysTripAfterDays(Integer howLong, Integer daysFromNow) {
+        bookingOptions.setStartDate(daysFromNow);
+        bookingOptions.setEndDate(daysFromNow, howLong);
+        dimo.applyDate(bookingOptions.getStartDate());
+        dimo.applyDate(bookingOptions.getEndDate());
+    }
+
+    @And("^he search for number of people to accompany him:$")
+    public void heSearchForNumberOfPeopleToAccompanyHim(List<BookingOptions> guests) { //List<Map<String,Integer>>
+        bookingOptions.setKids(guests.get(0).getKids());
+        bookingOptions.setAdults(guests.get(0).getAdults());
+
+        dimo.selectAdditionalGuests(bookingOptions);
+
     }
 }

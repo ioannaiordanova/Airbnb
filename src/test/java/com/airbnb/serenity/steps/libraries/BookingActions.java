@@ -21,10 +21,10 @@ public class BookingActions
         homePage.open();
     }
 
-    public void startSearchingWithPlace(BookingOptions options){
+    public void startSearchingWithPlace(String place){
         //options.getPlace();
         System.out.println(HomePage.WHERE_SEARCH);
-        fillsFieldWithData(HomePage.WHERE_SEARCH,options.getPlace());
+        fillsFieldWithData(HomePage.WHERE_SEARCH,place);
         this.currentPage.find(HomePage.WHERE_SEARCH).sendKeys(Keys.ENTER);
     }
 
@@ -45,20 +45,39 @@ public class BookingActions
 
     }
 
-    public void applyDate(BookingOptions options){
-       while (isTheNextYearNeeded(options.getStartDate(),HomePage.CALENDAR_MONTH_NAME) )
+    public void applyDate(LocalDate date){
+       while (isTheNextYearNeeded(date,HomePage.CALENDAR_MONTH_NAME) )
            clicksOn(HomePage.NEXT_MONTH_BUTTON);
 
-       while (isTheNextMonthNeeded(options.getStartDate(),HomePage.CALENDAR_MONTH_NAME))
+       while (isTheNextMonthNeeded(date,HomePage.CALENDAR_MONTH_NAME))
            clicksOn(HomePage.NEXT_MONTH_BUTTON);
 
         for (WebElementFacade Day:homePage.tdDatesEnabled){
-            System.out.println(Day.getText());
-            if (options.getDayStartTrip() == Integer.parseInt(Day.getText())){
+            System.out.println(String.valueOf(Day.getText()));
+            if (date.getDayOfMonth() == Integer.parseInt(Day.getText())){
                 clicksOn(Day);
+                return;
             }
         }
     }
 
+    public void increaseGuests(By guestLabel,Integer count){
+        for (WebElementFacade guestType:homePage.listTypesOfGuests) {
+            if (guestType.thenFindAll(guestLabel).size() == 1) {
+                for (Integer i = 0; i <count; i++) {
+                    WebElementFacade increaseGuestsButton = guestType.findBy(HomePage.INCREASE_GUESTS_BTN);
+                    clicksOn(increaseGuestsButton);
+                }
+            }
+        }
+    }
+
+    public void selectAdditionalGuests(BookingOptions options){
+       clicksOn(HomePage.GUEST_PICKER_BTN);
+       increaseGuests(HomePage.ADULTS_LABEL,options.getAdults());
+       increaseGuests(HomePage.CHILDRENS_LABEL,options.getKids());
+       clicksOn(HomePage.SAVE_GUESTS_BTN);
+
+    }
 
 }

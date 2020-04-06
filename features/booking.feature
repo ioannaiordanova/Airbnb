@@ -20,4 +20,4 @@ Feature: Booking
 
     Examples:
       | place | offset days | days stay | adults | children | currency | min price | max price | bathrooms | additional              | stars |
-      | Bali  | 5           | 7         | 2      | 1        | EUR      | 50        | 100       | 1         | Air conditioner,Jacuzzi | 5     |
+      | Bali  | 335           | 7         | 2      | 1        | EUR      | 50        | 100       | 1         | Air conditioner,Jacuzzi | 5     |

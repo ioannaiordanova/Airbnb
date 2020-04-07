@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static com.airbnb.serenity.page_objects.HomePage.NEXT_PAGE_ARROW;
+
 public class BaseActions {
     protected BasePage currentPage;
 
@@ -165,5 +167,17 @@ public class BaseActions {
 
     public String formatMonth(Month mon) {
         return mon.getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+    }
+
+    public void goToURL(String url){
+        currentPage.getDriver().navigate().to(url);
+    }
+
+    public int getWebElementFacadeCountBy(By locator){
+        return currentPage.findAll(locator).size();
+    }
+
+    public WebElementFacade getWebElementFacadeBy(By locator){
+        return  currentPage.find(locator);
     }
 }

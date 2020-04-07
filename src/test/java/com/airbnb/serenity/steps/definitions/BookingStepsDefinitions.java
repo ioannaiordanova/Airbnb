@@ -3,16 +3,18 @@ package com.airbnb.serenity.steps.definitions;
 import com.airbnb.serenity.entities.BookingOptions;
 import com.airbnb.serenity.steps.libraries.BookingActions;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import net.thucydides.core.annotations.Steps;
 
 import static com.airbnb.serenity.page_objects.HomePage.*;
+
 import java.util.List;
 import java.util.Map;
-import static com.airbnb.serenity.utils.SetBookingOptionsByList.prepareBookingOptionsObject;
 
+import static com.airbnb.serenity.utils.SetBookingOptionsByList.prepareBookingOptionsObject;
 
 
 public class BookingStepsDefinitions {
@@ -61,9 +63,17 @@ public class BookingStepsDefinitions {
     }
 
     @And("^John has a requirements for his room:$")
-    public void johnHasARequirementsForHisRoom(List<Map<String,String>> requirements) {
-     bookingOptions= prepareBookingOptionsObject(bookingOptions,requirements);
+    public void johnHasARequirementsForHisRoom(List<Map<String, String>> requirements) {
+        prepareBookingOptionsObject(bookingOptions, requirements);
+        dimo.setPriceRange(bookingOptions.getMinPrice(), bookingOptions.getMaxPrice());
+        dimo.selectRoomsAndBeds(bookingOptions.getBathRooms());
+        dimo.setAdditionalAmenities(bookingOptions.isAirConditioner(),bookingOptions.isJacuzzi());
 
 
+    }
+
+    @And("^he choose the first with \"([^\"]*)\" stars$")
+    public void heChooseTheFirstWithStars(Float stars)  {
+        dimo.selectTheFirstStayWithAtLeastGivenStar(stars);
     }
 }

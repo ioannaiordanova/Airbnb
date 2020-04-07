@@ -13,13 +13,17 @@ import java.util.List;
 public class HomePage
 extends PageObject {
     //Select localization currency EUR
-    public static final By LOCALIZATION_BTN = By.cssSelector("button._ndgmt0b");
+    public static final By LANGUAGE_AND_CURRENCY_BUTTON = By.cssSelector("button._ndgmt0b");
+    public static final By CURRENCY_TABLE_LINK = By.cssSelector("div#simple-header-locale-menu a[href$=currency]");
+    public static final By CURRENCY_TYPE = By.className("_a7a5sx");
+
 
     @FindBy (css ="div#simple-header-locale-menu a[href$=currency]")
     public WebElementFacade openCurrencyTableLink;
 
     @FindBy (css = "ul._19s389u li button")
     public List<WebElementFacade> listWithCurrencies;
+
 
 
     //Search criteria controls
@@ -50,7 +54,7 @@ extends PageObject {
     //other filters
 
     //price filter
-    public static By menuItemButtonPriceRange = By.cssSelector("div#menuItemButton-price_range button");
+    public static final By PRICE_RANGE_MENU_BUTTON = By.cssSelector("div#menuItemButton-price_range button");
 
     @FindBy (id="price_filter_min")
     public WebElementFacade priceFilterMin;
@@ -61,14 +65,14 @@ extends PageObject {
     public static By filterPanelSaveButton = By.id("filter-panel-save-button");
 
     //Rooms and beds
-    public static By menuItemButtonRoomsAndBeds = By.cssSelector("div#menuItemButton-rooms_and_beds button");
+    public static final By ROOMS_AND_BEDS_MENU_ITEM = By.cssSelector("div#menuItemButton-rooms_and_beds button");
 
     @FindBy ( css = "div#filterItem-stepper-min_bathrooms-0 button:nth-of-type(2)")
     public WebElementFacade plusBathRoomButton;
 
 
     //More filters
-    public static By menuItemButtonDynamicMoreFilters = By.cssSelector("div#menuItemButton-dynamicMoreFilters button");
+    public static By MORE_FILTERS_MENU_ITEM = By.cssSelector("div#menuItemButton-dynamicMoreFilters button");
 
     //label for Jaccuzi
     public static By jaccuziLabel = By.cssSelector("label[for=filterItem-checkbox-amenities-25]");
@@ -79,10 +83,12 @@ extends PageObject {
     public static By showMoreThanThreeThousandPlacesButton = By.className("_2i58o3a");
 
     //List of Stays
-    @FindBy (className = "_dx669kc")
+    public static final String CLASS_OF_STAY = "_8ssblpx";
+    @FindBy (className = CLASS_OF_STAY)
     public List<WebElementFacade> listOfStays;
 
-    public static By stars = By.cssSelector("span._3zgr580");//text
+    public static final String STARS_CSS = "span._3zgr580";//text
+    public static final By NEXT_PAGE_ARROW = By.cssSelector("._i66xk8d > a");
     public static By priceForOneNight = By.cssSelector("span._1p7iugi");
 
     //Check the results

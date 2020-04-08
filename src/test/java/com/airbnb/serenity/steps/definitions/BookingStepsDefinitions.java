@@ -6,12 +6,17 @@ import com.airbnb.serenity.steps.libraries.BookingActions;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import net.serenitybdd.core.annotations.findby.By;
 import net.thucydides.core.annotations.Steps;
 
 import static com.airbnb.serenity.page_objects.HomePage.*;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static com.airbnb.serenity.utils.SetBookingOptionsByList.prepareBookingOptionsObject;
@@ -52,7 +57,7 @@ public class BookingStepsDefinitions {
         dimo.applyDate(bookingOptions.getEndDate());
     }
 
-    @And("^he search for number of people to accompany him:$")
+    @When("^he search for number of people to accompany him:$")
     public void heSearchForNumberOfPeopleToAccompanyHim(List<BookingOptions> guests) { //List<Map<String,Integer>>
         bookingOptions.setKids(guests.get(0).getKids());
         bookingOptions.setAdults(guests.get(0).getAdults());
@@ -62,7 +67,7 @@ public class BookingStepsDefinitions {
 
     }
 
-    @And("^John has a requirements for his room:$")
+    @When("^John has a requirements for his room:$")
     public void johnHasARequirementsForHisRoom(List<Map<String, String>> requirements) {
         prepareBookingOptionsObject(bookingOptions, requirements);
         dimo.setPriceRange(bookingOptions.getMinPrice(), bookingOptions.getMaxPrice());
@@ -72,8 +77,24 @@ public class BookingStepsDefinitions {
 
     }
 
-    @And("^he choose the first with \"([^\"]*)\" stars$")
-    public void heChooseTheFirstWithStars(Float stars)  {
+    @When("^he choose the first with \"([^\"]*)\" stars$")
+    public void heChooseTheFirstWithStars(Float stars) throws InterruptedException {
         dimo.selectTheFirstStayWithAtLeastGivenStar(stars);
+
+    }
+
+
+
+    @Then("^he should see the reservation details in the widget$")
+    public void heShouldSeeTheReservationDetailsInTheWidget() {
+        //dimo.checkTheCalendarsDaysWithBlack(bookingOptions);
+    }
+
+    @Then("^he should see the correct sum according entered data$")
+    public void heShouldSeeTheCorrectSumAccordingEnteredData() {
+        dimo.checkPrice();
+
+
+
     }
 }

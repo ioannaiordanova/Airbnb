@@ -72,6 +72,7 @@ public class BookingActions
 
     }
 
+    @Step
     public void applyDate(LocalDate date) {
         while (isTheNextYearNeeded(date, HomePage.CALENDAR_MONTH_NAME))
             clicksOn(HomePage.NEXT_MONTH_BUTTON);
@@ -96,7 +97,7 @@ public class BookingActions
             }
         }
 
-     }
+    }
 
     public void increaseGuests(By guestLabel, Integer count) {
         for (WebElementFacade guestType : homePage.listTypesOfGuests) {
@@ -150,9 +151,6 @@ public class BookingActions
         clicksOn(menuWithFilters.showMoreThanThreeThousandPlacesButton);
 
     }
-
-
-
 
     public By returnStarsByStayNumberInPage(int number){
         int nthElement=number+1;
@@ -232,7 +230,6 @@ public class BookingActions
           if (nextArrow.isPresent()) {
 
               clicksOn(StaysPage.NEXT_PAGE_ARROW);
-
 
           } else {
               nextPageExists = false;

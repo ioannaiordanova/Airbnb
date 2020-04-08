@@ -4,6 +4,8 @@ import com.airbnb.serenity.entities.BookingOptions;
 import com.airbnb.serenity.page_objects.HomePage;
 import com.airbnb.serenity.steps.definitions.BookingStepsDefinitions;
 import net.serenitybdd.core.pages.WebElementFacade;
+import net.thucydides.core.annotations.Step;
+import net.thucydides.core.annotations.Steps;
 import org.jruby.RubyProcess;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -28,7 +30,7 @@ public class BookingActions
 
     public void startSearchingWithPlace(String place) {
         //options.getPlace();
-        System.out.println(HomePage.WHERE_SEARCH);
+//        System.out.println(HomePage.WHERE_SEARCH);
         fillsFieldWithData(HomePage.WHERE_SEARCH, place);
         this.currentPage.find(HomePage.WHERE_SEARCH).sendKeys(Keys.ENTER);
     }
@@ -50,6 +52,7 @@ public class BookingActions
 
     }
 
+    @Step
     public void applyDate(LocalDate date) {
         while (isTheNextYearNeeded(date, HomePage.CALENDAR_MONTH_NAME))
             clicksOn(HomePage.NEXT_MONTH_BUTTON);
@@ -74,7 +77,7 @@ public class BookingActions
             }
         }
 
-     }
+    }
 
     public void increaseGuests(By guestLabel, Integer count) {
         for (WebElementFacade guestType : homePage.listTypesOfGuests) {
@@ -95,53 +98,59 @@ public class BookingActions
         clicksOn(HomePage.SUBMIT_BUTTON);
     }
 
-    public void setPriceRange(BigDecimal minPrice,BigDecimal maxPrice){
+    @Step
+    public void setPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
         clicksOn(PRICE_RANGE_MENU_BUTTON);
         setElementInVisibleScreen(homePage.priceFilterMin);
-        fillsFieldWithData(homePage.priceFilterMin,minPrice.toString());
-        fillsFieldWithData(homePage.priceFilterMax,maxPrice.toString());
+        fillsFieldWithData(homePage.priceFilterMin, minPrice.toString());
+        fillsFieldWithData(homePage.priceFilterMax, maxPrice.toString());
         clicksOn(homePage.filterPanelSaveButton);
 
     }
 
-    public void selectRoomsAndBeds(int bathrooms){
-       boolean singleMenuItem=false;
-        if (currentPage.findAll(ROOMS_AND_BEDS_MENU_ITEM).size()==0){
+
+    public void selectRoomsAndBeds(int bathrooms) {
+        boolean singleMenuItem = false;
+        if (currentPage.findAll(ROOMS_AND_BEDS_MENU_ITEM).size() == 0) {
             clicksOn(MORE_FILTERS_MENU_ITEM);
-        }
-        else {
-            singleMenuItem=true;
+        } else {
+            singleMenuItem = true;
             clicksOn(ROOMS_AND_BEDS_MENU_ITEM);
         }
         clicksOn(homePage.plusBathRoomButton);
         if (singleMenuItem) clicksOn(homePage.filterPanelSaveButton);
     }
 
-    public void setAdditionalAmenities(boolean isAirConditioner,boolean isJacuzzi){
-        if (isAirConditioner){
+
+    public void setAdditionalAmenities(boolean isAirConditioner, boolean isJacuzzi) {
+        if (isAirConditioner) {
             clicksOn(homePage.airConditionerLabel);
         }
 
-        if (isJacuzzi){
+        if (isJacuzzi) {
             clicksOn(homePage.jaccuziLabel);
         }
         clicksOn(homePage.showMoreThanThreeThousandPlacesButton);
     }
 
-    public By returnStarsByStayNumberInPage(int number){
-        By StarsBy = By.cssSelector("."+CLASS_OF_STAY+":nth-of-type("+String.valueOf(number)+") "+STARS_CSS);
+    public By returnStarsByStayNumberInPage(int number) {
+        By StarsBy = By.cssSelector("." + CLASS_OF_STAY + ":nth-of-type(" + String.valueOf(number) + ") " + STARS_CSS);
         return StarsBy;
     }
 
-    public By returnlinkOFStayByStayNumberInPage(int number){
-        By linkBy = By.cssSelector("."+CLASS_OF_STAY+":nth-of-type("+String.valueOf(number)+") a");
+    public By returnLinkOFStayByStayNumberInPage(int number) {
+        By linkBy = By.cssSelector("." + CLASS_OF_STAY + ":nth-of-type(" + String.valueOf(number) + ") a");
         return linkBy;
     }
 
-    public void selectTheFirstStayWithAtLeastGivenStar(Float stars){
-      boolean nextPageExists = true;
-      int elementNumber = 0;
-      while (nextPageExists) {
+    public void selectTheFirstStayWithAtLeastGivenStar(Float stars) {
+        boolean nextPageExists = true;
+        int elementNumber = 0;
+        homePage.waitFor(homePage.listOfStays.get(1));
+        WebElementFacade linkTo = getWebElementFacadeBy(returnLinkOFStayByStayNumberInPage(1));
+        goToURL(linkTo.getAttribute("href"));
+
+/*      while (nextPageExists) {
           elementNumber = 0;
           for (WebElementFacade stay : homePage.listOfStays) {
               elementNumber++;
@@ -151,7 +160,7 @@ public class BookingActions
               if (star.isPresent()) {
                   float starValue = Float.parseFloat(star.getText());
                   if (starValue >= stars) {
-                     WebElementFacade link = getWebElementFacadeBy(returnlinkOFStayByStayNumberInPage(elementNumber));
+                     WebElementFacade link = getWebElementFacadeBy(returnLinkOFStayByStayNumberInPage(elementNumber));
                       System.out.println(link.getAttribute("href"));
                       goToURL(link.getAttribute("href"));
                       return;
@@ -163,8 +172,7 @@ public class BookingActions
               clicksOn(NEXT_PAGE_ARROW);
 
           } else nextPageExists = false;
-      }
-
+      }*/
 
 
     }

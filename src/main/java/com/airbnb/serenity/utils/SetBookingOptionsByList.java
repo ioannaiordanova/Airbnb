@@ -11,7 +11,7 @@ public class SetBookingOptionsByList {
     public static void prepareBookingOptionsObject(BookingOptions bookingOptions ,List<Map<String, String>> requirements){
         for(Map<String, String> requirementtMap: requirements){
             for(Map.Entry<String, String> requirement: requirementtMap.entrySet()){
-                System.out.println(requirement.getKey()+"  "+requirement.getValue());
+//                System.out.println(requirement.getKey()+"  "+requirement.getValue());
                 if (requirement.getKey().contains("min price")){
                     BigDecimal dc = new BigDecimal(requirement.getValue());
                     bookingOptions.setMinPrice(dc);

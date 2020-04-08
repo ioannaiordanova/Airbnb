@@ -17,6 +17,12 @@ public class BookingOptions {
     private boolean jacuzzi=false;
     private float stars;
 
+    private int price;
+    private int nights;
+    private int taxes;
+    private int totalPrice;
+
+
     public String getPlace() {
         return place;
     }
@@ -117,6 +123,38 @@ public class BookingOptions {
 
     public void setStars(float stars) {
         this.stars = stars;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int getTaxes() {
+        return taxes;
+    }
+
+    public void setTaxes(int taxes) {
+        this.taxes = taxes;
+    }
+
+    public int getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(int totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public int getNights() {
+        return nights;
+    }
+
+    public void setNights(int nights) {
+        this.nights = nights;
     }
 
     public Month getStartOfTripMonth(){

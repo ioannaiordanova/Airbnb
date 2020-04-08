@@ -1,27 +1,38 @@
 package com.airbnb.serenity.steps.definitions;
 
 import com.airbnb.serenity.entities.BookingOptions;
+import com.airbnb.serenity.page_objects.ReservePage;
 import com.airbnb.serenity.steps.libraries.BookingActions;
 
-import cucumber.api.PendingException;
+import com.airbnb.serenity.steps.libraries.ReserveActions;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import net.thucydides.core.annotations.Steps;
+import org.assertj.core.api.SoftAssertions;
 
 import static com.airbnb.serenity.page_objects.HomePage.*;
 
 import java.util.List;
 import java.util.Map;
 
+import static com.airbnb.serenity.page_objects.ReservePage.*;
 import static com.airbnb.serenity.utils.SetBookingOptionsByList.prepareBookingOptionsObject;
 
 
 public class BookingStepsDefinitions {
+
+    private double pricePerNight;
+    private BookingOptions bookingOptions;
     @Steps
     BookingActions dimo;
 
-    private BookingOptions bookingOptions;
+    @Steps
+    private ReserveActions reserveActions;
+    @Steps
+    private ReservePage reservePage;
+
 
     @Given("^(?:.*) is on the popular vacation booking site$")
     public void johnIsOnTheHomePage() {
@@ -36,7 +47,7 @@ public class BookingStepsDefinitions {
     }
 
 
-    @When("^he search for a place where to stay in \"([^\"]*)\"$")
+    @When("^(?:.*) search for a place where to stay in \"([^\"]*)\"$")
     public void heSearchForAPlaceWhereToStayIn(String place) {
         bookingOptions = new BookingOptions();
         bookingOptions.setPlace(place);
@@ -44,7 +55,7 @@ public class BookingStepsDefinitions {
         dimo.startSearchingWithPlace(bookingOptions.getPlace());
     }
 
-    @When("^he searching for vacation \"([^\"]*)\"-days trip after \"([^\"]*)\" days$")
+    @When("^s?he searching for vacation \"([^\"]*)\"-days trip after \"([^\"]*)\" days$")
     public void heSearchingForVacationDaysTripAfterDays(Integer howLong, Integer daysFromNow) {
         bookingOptions.setStartDate(daysFromNow);
         bookingOptions.setEndDate(daysFromNow, howLong);
@@ -52,7 +63,7 @@ public class BookingStepsDefinitions {
         dimo.applyDate(bookingOptions.getEndDate());
     }
 
-    @And("^he search for number of people to accompany him:$")
+    @When("^s?he search for number of people to accompany him:$")
     public void heSearchForNumberOfPeopleToAccompanyHim(List<BookingOptions> guests) { //List<Map<String,Integer>>
         bookingOptions.setKids(guests.get(0).getKids());
         bookingOptions.setAdults(guests.get(0).getAdults());
@@ -62,8 +73,8 @@ public class BookingStepsDefinitions {
 
     }
 
-    @And("^John has a requirements for his room:$")
-    public void johnHasARequirementsForHisRoom(List<Map<String, String>> requirements) {
+    @When("^(?:.*) has a requirements for his room:$")
+    public void userHasARequirementsForHisRoom(List<Map<String, String>> requirements) {
         prepareBookingOptionsObject(bookingOptions, requirements);
         dimo.setPriceRange(bookingOptions.getMinPrice(), bookingOptions.getMaxPrice());
         dimo.selectRoomsAndBeds(bookingOptions.getBathRooms());
@@ -72,8 +83,36 @@ public class BookingStepsDefinitions {
 
     }
 
-    @And("^he choose the first with \"([^\"]*)\" stars$")
+    @When("^s?he choose the first with \"([^\"]*)\" stars$")
     public void heChooseTheFirstWithStars(Float stars)  {
         dimo.selectTheFirstStayWithAtLeastGivenStar(stars);
+    }
+
+    @Then("^(?:.*) should see the correct sum according entered data$")
+    public void userShouldSeeTheCorrectSumAccordingEnteredData() {
+        SoftAssertions softly = new SoftAssertions();
+
+//        pricePerNight = reserveActions.readsDoubleFrom(PRICE_NIGHTS);
+//        System.out.println(pricePerNight);
+
+        softly.assertThat(reserveActions.readsTextFrom(PRICE_NIGHTS))
+                .as("Price for 1 night")
+                .contains(String.valueOf(pricePerNight));
+
+/*        softly.assertThat(reserveActions.readsTextFrom(ADULTS))
+                .as("Read text from adults")
+                .isEqualTo(this.bookingOptions.getAdults());
+
+        softly.assertThat(reserveActions.readsTextFrom(CHILDREN))
+                .as("Read text from children")
+                .isEqualTo(this.bookingOptions.getKids());
+        softly.assertThat(reserveActions.readsNumericValueFrom(TAXES))
+                .as("Price for taxes")
+                .isEqualTo(this.bookingOptions.getTaxes());
+
+        softly.assertThat(reserveActions.readsNumericValueFrom(TOTAL_PRICE_WITH_TAXES_NIGHTS))
+                .as("Total price with taxes")
+                .isEqualTo(this.bookingOptions.getTotalPrice());*/
+        softly.assertAll();
     }
 }

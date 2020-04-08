@@ -2,6 +2,7 @@ package com.airbnb.serenity.steps.libraries;
 
 import com.airbnb.serenity.page_objects.BasePage;
 import com.airbnb.serenity.page_objects.HomePage;
+import net.thucydides.core.annotations.Steps;
 import org.openqa.selenium.By;
 
 import net.serenitybdd.core.pages.WebElementFacade;
@@ -81,9 +82,10 @@ public class BaseActions {
     }
 
 
-    @Step("Read the text from Web Element")
+//    @Step("Read the text from Web Element")
     public String readsTextFrom(WebElementFacade webElement) {
         return webElement.waitUntilVisible()
+                .waitUntilPresent()
                 .getText()
                 .trim();
     }
@@ -96,7 +98,9 @@ public class BaseActions {
     }
 
     public String readsTextFrom(By locator) {
-        return readsTextFrom((WebElementFacade) currentPage.find(locator));
+        return readsTextFrom((WebElementFacade) currentPage.find(locator)
+                .waitUntilVisible()
+                .waitUntilPresent());
     }
 
     @Step("Reads the text from Web Element")
@@ -136,17 +140,28 @@ public class BaseActions {
 
     }
 
-    public Number getPriceFromCurrency(WebElementFacade element) {
-        String numericText = readsTextFrom(element);
-        NumberFormat number = NumberFormat.getCurrencyInstance(Locale.US);
+    public double readsDoubleFrom(By locator) {
+        String numericText = readsTextFrom((WebElementFacade) currentPage.find(locator));
+        NumberFormat number = NumberFormat.getCurrencyInstance(Locale.GERMANY);
 
         try {
-            return number.parse(numericText);
+            return number.parse(numericText).doubleValue();
         } catch (ParseException e) {
             e.printStackTrace();
             throw new RuntimeException("Can't convert " + numericText + " to Double!");
         }
+    }
 
+    public int readsIntegerFrom(By locator) {
+        String numericText = readsTextFrom((WebElementFacade) currentPage.find(locator));
+        NumberFormat number = NumberFormat.getCurrencyInstance(Locale.GERMANY);
+
+        try {
+            return number.parse(numericText).intValue();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Can't convert " + numericText + " to Double!");
+        }
     }
 
     public void setElementInVisibleScreen(By locator) {
@@ -178,6 +193,13 @@ public class BaseActions {
     }
 
     public WebElementFacade getWebElementFacadeBy(By locator){
+        currentPage.find(locator).waitUntilVisible().waitUntilEnabled().waitUntilClickable();
         return  currentPage.find(locator);
+    }
+
+    @Step("")
+    public int readsNumericValueFrom(By locator) {
+        String numericText = currentPage.find(locator).getValue();
+        return Integer.parseInt(numericText);
     }
 }

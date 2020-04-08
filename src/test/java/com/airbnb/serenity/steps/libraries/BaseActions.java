@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static com.airbnb.serenity.page_objects.HomePage.NEXT_PAGE_ARROW;
+import static com.airbnb.serenity.page_objects.StaysPage.NEXT_PAGE_ARROW;
 
 public class BaseActions {
     protected BasePage currentPage;
@@ -31,7 +31,7 @@ public class BaseActions {
     protected void fillsFieldWithData(WebElementFacade fieldElement,
                                       String data) {
         if (data != null) {
-            fieldElement.waitUntilEnabled()
+            fieldElement.waitUntilEnabled().waitUntilVisible()
                     .type(data);
         }
     }
@@ -98,9 +98,7 @@ public class BaseActions {
     }
 
     public String readsTextFrom(By locator) {
-        return readsTextFrom((WebElementFacade) currentPage.find(locator)
-                .waitUntilVisible()
-                .waitUntilPresent());
+        return readsTextFrom((WebElementFacade) currentPage.find(locator).waitUntilPresent().waitUntilVisible());
     }
 
     @Step("Reads the text from Web Element")
@@ -188,12 +186,12 @@ public class BaseActions {
         currentPage.getDriver().navigate().to(url);
     }
 
-    public int getWebElementFacadeCountBy(By locator){
-        return currentPage.findAll(locator).size();
+    public List<WebElementFacade> getAllWebElementFacadeABy(By locator){
+        return currentPage.findAll(locator);
     }
 
     public WebElementFacade getWebElementFacadeBy(By locator){
-        currentPage.find(locator).waitUntilVisible().waitUntilEnabled().waitUntilClickable();
+        currentPage.find(locator).waitUntilVisible().waitUntilEnabled();
         return  currentPage.find(locator);
     }
 

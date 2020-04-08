@@ -2,26 +2,39 @@ package com.airbnb.serenity.steps.libraries;
 
 import com.airbnb.serenity.entities.BookingOptions;
 import com.airbnb.serenity.page_objects.HomePage;
-import com.airbnb.serenity.steps.definitions.BookingStepsDefinitions;
+import com.airbnb.serenity.page_objects.MenuWithFilters;
+import com.airbnb.serenity.page_objects.StaysPage;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.thucydides.core.annotations.Step;
-import net.thucydides.core.annotations.Steps;
-import org.jruby.RubyProcess;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.Month;
-import java.time.format.TextStyle;
+import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
 
 import static com.airbnb.serenity.page_objects.HomePage.*;
+import static com.airbnb.serenity.page_objects.MenuWithFilters.ROOMS_AND_BEDS_MENU_ITEM;
+import static com.airbnb.serenity.page_objects.StaysPage.STAR_WITH_VALUE;
+import static org.assertj.core.api.Assertions.assertThat;
+
+
 
 public class BookingActions
         extends BaseActions {
     private HomePage homePage;
+    private MenuWithFilters menuWithFilters;
+    private StaysPage staysPage;
 
 
     public void openPage() {
@@ -30,8 +43,15 @@ public class BookingActions
 
     public void startSearchingWithPlace(String place) {
         //options.getPlace();
-//        System.out.println(HomePage.WHERE_SEARCH);
-        fillsFieldWithData(HomePage.WHERE_SEARCH, place);
+        System.out.println(HomePage.WHERE_SEARCH);
+        for (int i=0;i<1;i++) {
+            try {
+                fillsFieldWithData(HomePage.WHERE_SEARCH, place);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                i=0;
+            }
+        }
         this.currentPage.find(HomePage.WHERE_SEARCH).sendKeys(Keys.ENTER);
     }
 
@@ -98,82 +118,157 @@ public class BookingActions
         clicksOn(HomePage.SUBMIT_BUTTON);
     }
 
-    @Step
-    public void setPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
-        clicksOn(PRICE_RANGE_MENU_BUTTON);
-        setElementInVisibleScreen(homePage.priceFilterMin);
-        fillsFieldWithData(homePage.priceFilterMin, minPrice.toString());
-        fillsFieldWithData(homePage.priceFilterMax, maxPrice.toString());
-        clicksOn(homePage.filterPanelSaveButton);
+    public void setPriceRange(BigDecimal minPrice,BigDecimal maxPrice){
+        clicksOn(MenuWithFilters.PRICE_RANGE_MENU_BUTTON);
+        setElementInVisibleScreen(menuWithFilters.priceFilterMin);
+        fillsFieldWithData(menuWithFilters.priceFilterMin,minPrice.toString());
+        fillsFieldWithData(menuWithFilters.priceFilterMax,maxPrice.toString());
+        clicksOn(menuWithFilters.filterPanelSaveButton);
 
     }
 
-
-    public void selectRoomsAndBeds(int bathrooms) {
-        boolean singleMenuItem = false;
-        if (currentPage.findAll(ROOMS_AND_BEDS_MENU_ITEM).size() == 0) {
-            clicksOn(MORE_FILTERS_MENU_ITEM);
-        } else {
-            singleMenuItem = true;
+    public void selectRoomsAndBeds(int bathrooms){
+       boolean singleMenuItem=false;
+        if (currentPage.findAll(ROOMS_AND_BEDS_MENU_ITEM).size()==0){
+            clicksOn(MenuWithFilters.MORE_FILTERS_MENU_ITEM);
+        }
+        else {
+            singleMenuItem=true;
             clicksOn(ROOMS_AND_BEDS_MENU_ITEM);
         }
-        clicksOn(homePage.plusBathRoomButton);
-        if (singleMenuItem) clicksOn(homePage.filterPanelSaveButton);
+        clicksOn(menuWithFilters.plusBathRoomButton);
+        if (singleMenuItem) clicksOn(menuWithFilters.filterPanelSaveButton);
     }
 
-
-    public void setAdditionalAmenities(boolean isAirConditioner, boolean isJacuzzi) {
-        if (isAirConditioner) {
-            clicksOn(homePage.airConditionerLabel);
+    public void setAdditionalAmenities(boolean isAirConditioner,boolean isJacuzzi){
+        if (isAirConditioner){
+            clicksOn(menuWithFilters.airConditionerLabel);
         }
 
-        if (isJacuzzi) {
-            clicksOn(homePage.jaccuziLabel);
+        if (isJacuzzi){
+            clicksOn(menuWithFilters.jaccuziLabel);
         }
-        clicksOn(homePage.showMoreThanThreeThousandPlacesButton);
+        clicksOn(menuWithFilters.showMoreThanThreeThousandPlacesButton);
+
     }
 
-    public By returnStarsByStayNumberInPage(int number) {
-        By StarsBy = By.cssSelector("." + CLASS_OF_STAY + ":nth-of-type(" + String.valueOf(number) + ") " + STARS_CSS);
+    public By returnStarsByStayNumberInPage(int number){
+        int nthElement=number+1;
+        By StarsBy = By.cssSelector("."+StaysPage.CLASS_OF_STAY+":nth-of-type("+String.valueOf(nthElement)+") "+StaysPage.STARS_CSS);
         return StarsBy;
     }
 
-    public By returnLinkOFStayByStayNumberInPage(int number) {
-        By linkBy = By.cssSelector("." + CLASS_OF_STAY + ":nth-of-type(" + String.valueOf(number) + ") a");
+    public By returnLinkOFStayByStayNumberInPage(int number){
+        int nthElement=number+1;
+        By linkBy = By.cssSelector("."+StaysPage.CLASS_OF_STAY+":nth-of-type("+String.valueOf(nthElement)+") a");
         return linkBy;
     }
 
-    public void selectTheFirstStayWithAtLeastGivenStar(Float stars) {
+    public By returnStayByStayNumberInPage(int number){
+        int nthElement=number+1;
+        By linkBy = By.cssSelector("."+StaysPage.CLASS_OF_STAY+":nth-of-type("+String.valueOf(nthElement)+")");
+        return linkBy;
+    }
+
+    public By prepareByForGivenStars(String stars){
+         String byLocatorString = STAR_WITH_VALUE.replace("star_value",stars );
+         By starsBy = By.xpath(byLocatorString);
+        return starsBy;
+    }
+
+    @Step("The Stay with {0} Stars or above not found with this search criteria")
+    public void elementNotFound(float stars){
+        System.out.println("The element with stars >= "+String.valueOf(stars)+" not found");
+    }
+
+    public void selectTheFirstStayWithAtLeastGivenStar(Float stars) throws InterruptedException {
+
+
         boolean nextPageExists = true;
-        int elementNumber = 0;
-        homePage.waitFor(homePage.listOfStays.get(1));
-        WebElementFacade linkTo = getWebElementFacadeBy(returnLinkOFStayByStayNumberInPage(1));
-        goToURL(linkTo.getAttribute("href"));
+         int i=0;
+         while (nextPageExists) {
+         i=0;
 
-/*      while (nextPageExists) {
-          elementNumber = 0;
-          for (WebElementFacade stay : homePage.listOfStays) {
-              elementNumber++;
+         List<WebElementFacade> Stays= new ArrayList();
+         for (int n=0;n<10
+                 ;n++) {
+             try {
+                  Stays = staysPage.listOfStays;
 
-              WebElementFacade star = getWebElementFacadeBy(returnStarsByStayNumberInPage(elementNumber));
+             } catch (Exception e) {
+                 System.out.println(e.getMessage());
+             }
+         }
+          while (i<Stays.size()) {
+             // setElementInVisibleScreen(Stay);
+              WebElementFacade   star1 =null;
+              String startText="1";
+              for (int n=0;n<3;n++) {
+                  try {
+                        star1 = (WebElementFacade) Stays.get(i).findBy(By.xpath(".//span[@class='_3zgr580']"));
+                       startText=star1.getText();
+                      //List<WebElementFacade> starsList = getAllWebElementFacadeABy(returnStarsByStayNumberInPage(i));
+                  } catch (Exception e) {
 
-              if (star.isPresent()) {
-                  float starValue = Float.parseFloat(star.getText());
+                  }
+              }
+              if (star1 != null) {
+                  //WebElementFacade star = starsList.get(0);
+
+                  float starValue = Float.parseFloat(startText);
+                  System.out.println("Star value "+starValue);
                   if (starValue >= stars) {
-                     WebElementFacade link = getWebElementFacadeBy(returnLinkOFStayByStayNumberInPage(elementNumber));
+                     WebElementFacade link = getWebElementFacadeBy(returnLinkOFStayByStayNumberInPage(i));
                       System.out.println(link.getAttribute("href"));
                       goToURL(link.getAttribute("href"));
                       return;
                   }
               }
+              i++;
           }
+            WebElementFacade nextArrow =getWebElementFacadeBy(StaysPage.NEXT_PAGE_ARROW);
+          if (nextArrow.isPresent()) {
 
-          if (getWebElementFacadeCountBy(NEXT_PAGE_ARROW) > 0) {
-              clicksOn(NEXT_PAGE_ARROW);
+              clicksOn(StaysPage.NEXT_PAGE_ARROW);
 
-          } else nextPageExists = false;
-      }*/
+          } else {
+              nextPageExists = false;
+              elementNotFound(stars);
+
+          }
+      }
+    }
+
+    public void checkTheCalendarsDaysWithBlack(BookingOptions options){
+        int startDayTrip = options.getDayStartTrip();
+        String startTripMonth = formatMonth(options.getStartOfTripMonth());
+        int endDayTrip = options.getDayEndTrip();
+        String endTripMonth = formatMonth(options.getEndOfTripMonth());
+        assertThat(getWebElementFacadeBy(CALENDARS_TIME_PERIOD).getText())
+                .as("The start month has to be listed")
+                .containsIgnoringCase(startTripMonth);
 
 
+
+    }
+
+    public void checkPrice(){
+
+        currentPage.waitForRenderedElementsToBePresent(By.xpath("//div[@class='_80f7zz']//span[@class='_pgfqnw'] | //div[@class='_n4om66']//span[@class='_doc79r']"));
+        String priceDisplayed =  readsTextFrom(By.xpath("//div[@class='_80f7zz']//span[@class='_pgfqnw'] | //div[@class='_n4om66']//span[@class='_doc79r']"));
+
+        NumberFormat numberFormat = new DecimalFormat("¤#.00", new DecimalFormatSymbols(Locale.GERMANY));
+
+       // NumberFormat number = NumberFormat.getCurrencyInstance(Locale.GERMANY);
+        System.out.println("Currency Symbol "+numberFormat.getCurrency().getSymbol());
+        System.out.println("Currency Display Name "+numberFormat.getCurrency().getDisplayName());
+        Number num=0;
+        try {
+            num=numberFormat.parse(priceDisplayed);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Can't convert " + priceDisplayed + " to Double!");
+        }
+        System.out.println(num);
     }
 }

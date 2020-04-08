@@ -9,12 +9,16 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import net.serenitybdd.core.annotations.findby.By;
 import net.thucydides.core.annotations.Steps;
 import org.assertj.core.api.SoftAssertions;
 
 import static com.airbnb.serenity.page_objects.HomePage.*;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static com.airbnb.serenity.page_objects.ReservePage.*;
@@ -63,6 +67,7 @@ public class BookingStepsDefinitions {
         dimo.applyDate(bookingOptions.getEndDate());
     }
 
+
     @When("^s?he search for number of people to accompany him:$")
     public void heSearchForNumberOfPeopleToAccompanyHim(List<BookingOptions> guests) { //List<Map<String,Integer>>
         bookingOptions.setKids(guests.get(0).getKids());
@@ -84,14 +89,23 @@ public class BookingStepsDefinitions {
     }
 
     @When("^s?he choose the first with \"([^\"]*)\" stars$")
-    public void heChooseTheFirstWithStars(Float stars)  {
+    public void heChooseTheFirstWithStars(Float stars) throws InterruptedException {
         dimo.selectTheFirstStayWithAtLeastGivenStar(stars);
+
     }
+
+
+
+    @Then("^he should see the reservation details in the widget$")
+    public void heShouldSeeTheReservationDetailsInTheWidget() {
+        //dimo.checkTheCalendarsDaysWithBlack(bookingOptions);
+    }
+
 
     @Then("^(?:.*) should see the correct sum according entered data$")
     public void userShouldSeeTheCorrectSumAccordingEnteredData() {
         SoftAssertions softly = new SoftAssertions();
-
+        dimo.checkPrice();
 //        pricePerNight = reserveActions.readsDoubleFrom(PRICE_NIGHTS);
 //        System.out.println(pricePerNight);
 

@@ -53,49 +53,12 @@ extends PageObject {
 
     //other filters
 
-    //price filter
-    public static final By PRICE_RANGE_MENU_BUTTON = By.cssSelector("div#menuItemButton-price_range button");
 
-    @FindBy (id="price_filter_min")
-    public WebElementFacade priceFilterMin;
-
-    @FindBy(id="price_filter_max")
-    public WebElementFacade priceFilterMax;
-
-    public static By filterPanelSaveButton = By.id("filter-panel-save-button");
-
-    //Rooms and beds
-    public static final By ROOMS_AND_BEDS_MENU_ITEM = By.cssSelector("div#menuItemButton-rooms_and_beds button");
-
-    @FindBy ( css = "div#filterItem-stepper-min_bathrooms-0 button:nth-of-type(2)")
-    public WebElementFacade plusBathRoomButton;
-
-
-    //More filters
-    public static By MORE_FILTERS_MENU_ITEM = By.cssSelector("div#menuItemButton-dynamicMoreFilters button");
-
-    //label for Jaccuzi
-    public static By jaccuziLabel = By.cssSelector("label[for=filterItem-checkbox-amenities-25]");
-
-    //label Air conditioner
-    public static By airConditionerLabel = By.cssSelector("label[for=filterItem-checkbox-amenities-5]");
-
-    public static By showMoreThanThreeThousandPlacesButton = By.className("_2i58o3a");
-
-    //List of Stays
-    public static final String CLASS_OF_STAY = "_8ssblpx";
-    @FindBy (className = CLASS_OF_STAY)
-    public List<WebElementFacade> listOfStays;
-
-    public static final String STARS_CSS = "span._3zgr580";//text
-    public static final By NEXT_PAGE_ARROW = By.cssSelector("._i66xk8d > a");
-    public static By priceForOneNight = By.cssSelector("span._1p7iugi");
 
     //Check the results
-    //"//div[@class='_1svux14' and @data-visible='true']//h3[contains(text(),'April')]"
-    public static By CALENDARS_TIME_PERIOD = By.cssSelector("div[class=_1svux14][data-visible=true]");
+    //"//div[@class='_1svux14' and @data-visible='true']//h3[contains(text(),'April')]"[contains(text(),'April')]
+    public static By CALENDARS_TIME_PERIOD = By.cssSelector("div[class=_1svux14][data-visible=true] h3");
 
-    public static By FILTER_CALENDARS_BY_CURRENT_MONTH = By.xpath("//h3[contains(text(),'April')]");
 
     @FindBy (css = "td._12fun97 div._7ll8pi0.notranslate")
     List<WebElementFacade> listWithStartAndEndDateMarked;

@@ -38,6 +38,7 @@ public class BookingActions
 
     public void startSearchingWithPlace(String place) {
         //options.getPlace();
+        currentPage.waitForRenderedElements(LABEL_FOR_CITY);
         clicksOn(LABEL_FOR_CITY);
         System.out.println(HomePage.SEARCH_FOR_CITY);
 

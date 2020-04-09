@@ -109,9 +109,9 @@ public class BookingStepsDefinitions {
 //        pricePerNight = reserveActions.readsDoubleFrom(PRICE_NIGHTS);
 //        System.out.println(pricePerNight);
 
-        softly.assertThat(reserveActions.readsTextFrom(PRICE_NIGHTS))
-                .as("Price for 1 night")
-                .contains(String.valueOf(pricePerNight));
+//        softly.assertThat(reserveActions.readsTextFrom(PRICE_NIGHTS))
+//                .as("Price for 1 night")
+//                .contains(String.valueOf(pricePerNight));
 
 /*        softly.assertThat(reserveActions.readsTextFrom(ADULTS))
                 .as("Read text from adults")

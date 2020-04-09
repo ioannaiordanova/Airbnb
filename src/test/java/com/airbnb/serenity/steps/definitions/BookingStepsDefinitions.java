@@ -112,6 +112,7 @@ public class BookingStepsDefinitions {
         softly.assertThat(anni.readsTextFrom(PRICE_NIGHTS))
                 .as("Price for 1 night")
                 .contains(String.valueOf(pricePerNight));
+>>>>>>> f3f8b18c55f10f9a3a314a19b0003b4d736850da
 
       softly.assertThat(reserveActions.readsTextFrom(ADULTS))
                 .as("Read text from adults")

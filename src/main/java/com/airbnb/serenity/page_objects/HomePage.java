@@ -11,7 +11,7 @@ import java.util.List;
 
 @DefaultUrl("/")
 public class HomePage
-extends PageObject {
+        extends PageObject {
     //Select localization currency EUR
     //public static final By LANGUAGE_AND_CURRENCY_BUTTON = By.cssSelector("button._ndgmt0b");
     public static final By LANGUAGE_AND_CURRENCY_BUTTON = By.cssSelector("button._547li01");
@@ -21,7 +21,6 @@ extends PageObject {
 
     @FindBy (css = "ul._19s389u li button")
     public List<WebElementFacade> listWithCurrencies;
-
 
 
     //Search criteria controls
@@ -37,8 +36,8 @@ extends PageObject {
    // public static final By NEXT_MONTH_BUTTON = By.className("_1h5uiygl");
     public static final By NEXT_MONTH_BUTTON = By.cssSelector("div[role=button]:nth-of-type(2) button[aria-label]");
 
-    @FindBy ( css = "div[class=_1svux14][data-visible=true] table td[aria-disabled=false]")
-    public List<WebElementFacade>  tdDatesEnabled;
+    @FindBy(css = "div[class=_1svux14][data-visible=true] table td[aria-disabled=false]")
+    public List<WebElementFacade> tdDatesEnabled;
 
 
     //public static final By GUEST_PICKER_BTN = By.id("lp-guestpicker");
@@ -61,13 +60,11 @@ extends PageObject {
 
     //other filters
 
+    //other filters
     //Check the results
     //"//div[@class='_1svux14' and @data-visible='true']//h3[contains(text(),'April')]"[contains(text(),'April')]
     public static By CALENDARS_TIME_PERIOD = By.cssSelector("div[class=_1svux14][data-visible=true] h3");
 
     @FindBy (css = "td._12fun97 div._7ll8pi0.notranslate")
     List<WebElementFacade> listWithStartAndEndDateMarked;
-
-
-
 }

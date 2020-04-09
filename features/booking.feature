@@ -7,7 +7,7 @@ Feature: Booking
   Scenario Outline: Successful vacation booking reservation
 
     Given John is on the popular vacation booking site
-    And he select english language plus currency "<currency>"
+    And he select currency "<currency>"
 
     When John search for a place where to stay in "<place>"
     And he searching for vacation "<days stay>"-days trip after "<offset days>" days

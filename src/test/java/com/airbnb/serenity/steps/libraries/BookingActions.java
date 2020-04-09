@@ -38,16 +38,12 @@ public class BookingActions
 
     public void startSearchingWithPlace(String place) {
         //options.getPlace();
-        System.out.println(SEARCH_FOR_CITY);
-        for (int i = 0; i < 1; i++) {
-            try {
-                fillsFieldWithData(SEARCH_FOR_CITY, place);
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-                i = 0;
-            }
-        }
-        this.currentPage.find(SEARCH_FOR_CITY).sendKeys(Keys.ENTER);
+        clicksOn(LABEL_FOR_CITY);
+        System.out.println(HomePage.SEARCH_FOR_CITY);
+
+        fillsFieldWithData(HomePage.SEARCH_FOR_CITY, place);
+
+        this.currentPage.find(HomePage.SEARCH_FOR_CITY).sendKeys(Keys.ENTER);
     }
 
     public boolean isTheNextYearNeeded(LocalDate date, By locatorMonthAndYear) {
@@ -94,17 +90,6 @@ public class BookingActions
 
     }
 
-/*    public void increaseGuests(By guestLabel, Integer count) {
-        for (WebElementFacade guestType : homePage.listTypesOfGuests) {
-            if (guestType.thenFindAll(guestLabel).size() == 1) {
-                for (int i = 0; i < count; i++) {
-                    WebElementFacade increaseGuestsButton = guestType.findBy(HomePage.INCREASE_GUESTS_BTN);
-                    clicksOn(increaseGuestsButton);
-                }
-            }
-        }
-    }*/
-
     public void increaseAdults(Integer countAdults) {
         for (int i = 0; i < countAdults; i++) {
             WebElementFacade increaseAdultsButton = getWebElementFacadeBy(INCREASE_GUESTS_ADULTS);
@@ -125,15 +110,6 @@ public class BookingActions
         increaseKids(options.getKids());
         clicksOn(SUBMIT_BUTTON);
     }
-
-/*    public void selectAdditionalGuests(BookingOptions options) {
-        clicksOn(HomePage.GUEST_PICKER_BTN);
-        increaseGuests(HomePage.INCREASE_GUESTS_ADULTS, options.getAdults());
-        increaseGuests(HomePage.INCREASE_GUESTS_KIDS, options.getKids());
-//        clicksOn(HomePage.SAVE_GUESTS_BTN);
-        clicksOn(HomePage.SUBMIT_BUTTON);
-    }*/
-
 
     public void setPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
         clicksOn(MenuWithFilters.PRICE_RANGE_MENU_BUTTON);
@@ -271,16 +247,18 @@ public class BookingActions
     @Step
     public void checkPrice() {
 
-//        currentPage.waitForRenderedElementsToBePresent(By.xpath("//div[@class='_80f7zz']//span[@class='_pgfqnw'] | //div[@class='_n4om66']//span[@class='_doc79r']"));
-//        String priceDisplayed = readsTextFrom(By.xpath("//div[@class='_80f7zz']//span[@class='_pgfqnw'] | //div[@class='_n4om66']//span[@class='_doc79r']"));
 //        currentPage.waitForRenderedElementsToBePresent(By.cssSelector("div[data-testid='book-it-default'] span[aria-hidden='true']"));
 //        String priceDisplayed = readsTextFrom(By.cssSelector("div[data-testid='book-it-default'] span[aria-hidden='true']"));
 
 //        currentPage.waitForRenderedElementsToBePresent(By.cssSelector("._ymq6as span span:nth-of-type(1)"));
 //        String priceDisplayed = readsTextFrom(By.cssSelector("._ymq6as span span:nth-of-type(1)"));
 
-        currentPage.waitForRenderedElementsToBePresent(By.cssSelector("div[data-testid='book-it-default'] span span:nth-of-type(1)"));
-        String priceDisplayed = readsTextFrom(By.cssSelector("div[data-testid='book-it-default'] span span:nth-of-type(1)"));
+/*        currentPage.waitForRenderedElementsToBePresent(By.cssSelector("div[data-testid='book-it-default'] span span:nth-of-type(1)"));
+        String priceDisplayed = readsTextFrom(By.cssSelector("div[data-testid='book-it-default'] span span:nth-of-type(1)"));*/
+
+
+        currentPage.waitForRenderedElementsToBePresent(By.xpath("//div[@class='_80f7zz']//span[@class='_pgfqnw'] | //div[@class='_n4om66']//span[@class='_doc79r']"));
+        String priceDisplayed = readsTextFrom(By.xpath("//div[@class='_80f7zz']//span[@class='_pgfqnw'] | //div[@class='_n4om66']//span[@class='_doc79r']"));
 
         NumberFormat numberFormat = new DecimalFormat("¤#.00", new DecimalFormatSymbols(Locale.GERMANY));
 

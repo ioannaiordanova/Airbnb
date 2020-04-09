@@ -11,10 +11,14 @@ import org.openqa.selenium.interactions.Actions;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -23,7 +27,7 @@ import static com.airbnb.serenity.page_objects.StaysPage.NEXT_PAGE_ARROW;
 public class BaseActions {
     protected BasePage currentPage;
 
-    protected void navigateToURL() {
+    public void navigateToURL() {
         currentPage.open();
     }
 
@@ -94,6 +98,7 @@ public class BaseActions {
     public void clicksOn(final By locator) {
         currentPage.find(locator)
                 .waitUntilClickable()
+                .waitUntilEnabled()
                 .click();
     }
 
@@ -199,5 +204,19 @@ public class BaseActions {
     public int readsNumericValueFrom(By locator) {
         String numericText = currentPage.find(locator).getValue();
         return Integer.parseInt(numericText);
+    }
+
+    public LocalDate convertStringToDate(String format, String dateInString){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+
+
+            LocalDate  date = LocalDate.parse(dateInString,formatter);
+            System.out.println(date);
+            return date;
+          //  System.out.println("time zone : " + TimeZone.getDefault().getID());
+          //  System.out.println(formatter.format(date));
+
+
+
     }
 }

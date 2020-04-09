@@ -3,8 +3,10 @@ package com.airbnb.serenity.page_objects;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
+import net.thucydides.core.annotations.DefaultUrl;
 import org.openqa.selenium.By;
 
+@DefaultUrl("https://bg.airbnb.com/rooms/25563767?location=Bli&adults=2&children=1&check_in=2020-04-12&check_out=2020-04-18&source_impression_id=p3_1586373524_A%2Fgzot5WVdJUn49Q")
 public class ReservePage extends PageObject {
 
     @FindBy(css = "div._ymq6as span span._pgfqnw")
@@ -37,4 +39,12 @@ public class ReservePage extends PageObject {
     @FindBy(css = "#GuestPicker-book_it-form-children")
     public WebElementFacade children;
     public static final By CHILDREN = By.cssSelector("#GuestPicker-book_it-form-children");
+
+    //======================================================================================
+    public static final By START_OF_TRIP_DATE = By.xpath("//div[@class='_1yy0mt98'] | //div[@class='_ykxqsm']");
+
+    public static final By GESTS_LABEL = By.className(".guest-label span");
+    public static final By NUMBER_ADULTS_DISPAYED = By.cssSelector("div[aria-labelledby*=adults] div[aria-hidden=true]");
+    public static final By NUMBER_CHILDREN_DISPLAYED = By.cssSelector("div[aria-labelledby*=children] div[aria-hidden=true]");
+
 }

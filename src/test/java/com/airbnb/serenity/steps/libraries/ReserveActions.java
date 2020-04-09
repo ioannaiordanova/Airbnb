@@ -8,6 +8,10 @@ import org.assertj.core.api.SoftAssertions;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static com.airbnb.serenity.page_objects.ReservePage.GESTS_LABEL;
 
 public class ReserveActions
         extends BaseActions {
@@ -42,7 +46,19 @@ public class ReserveActions
     }
 
     public void checkGuests(BookingOptions options){
+       currentPage.waitForRenderedElements(GESTS_LABEL);
+        System.out.println("Overall guests: "+getWebElementFacadeBy(GESTS_LABEL).getText());
+        Pattern p = Pattern.compile("\\d+");
+        Matcher m = p.matcher(getWebElementFacadeBy(GESTS_LABEL).getText());
+        while(m.find()) {
+            System.out.println(m.group());
+        }
 
+        clicksOn(GESTS_LABEL);
+        String adultsDisplayed = getWebElementFacadeBy(ReservePage.NUMBER_ADULTS_DISPAYED).getText();
+        String kidsDisplayed = getWebElementFacadeBy(ReservePage.NUMBER_CHILDREN_DISPLAYED).getText();
+        System.out.println("Adults "+adultsDisplayed+" Kids: "+kidsDisplayed);
+        clicksOn(GESTS_LABEL);
 
     }
 

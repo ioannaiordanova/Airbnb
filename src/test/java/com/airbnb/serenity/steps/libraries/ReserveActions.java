@@ -3,6 +3,7 @@ package com.airbnb.serenity.steps.libraries;
 import com.airbnb.serenity.entities.BookingOptions;
 import com.airbnb.serenity.page_objects.ReservePage;
 import net.serenitybdd.core.pages.WebElementFacade;
+import net.thucydides.core.annotations.Step;
 import org.assertj.core.api.SoftAssertions;
 
 import java.time.LocalDate;
@@ -23,6 +24,7 @@ public class ReserveActions
         return String.format("%.0f", bookingOptions.getPrice() * bookingOptions.getNights());
     }
 
+    @Step("Assert the dates")
     public void checkDates(BookingOptions options){
         List<WebElementFacade> tripDates =  getAllWebElementFacadeABy(ReservePage.START_OF_TRIP_DATE);
         String startOfTripDate=tripDates.get(0).getText();
@@ -46,6 +48,7 @@ public class ReserveActions
 
     }
 
+    @Step("Assert the number of guests")
     public void checkGuests(BookingOptions options){
        currentPage.waitForRenderedElements(GUESTS_LABEL);
         System.out.println("Overall guests: "+getWebElementFacadeBy(GUESTS_LABEL).getText());

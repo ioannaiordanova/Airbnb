@@ -90,24 +90,25 @@ public class BookingActions
 
     }
 
-    public void increaseGuests(Integer countAdults, Integer countKids) {
-
+    public void increaseAdults(Integer countAdults) {
         for (int i = 0; i < countAdults; i++) {
-            WebElementFacade increaseGuestsButton = getWebElementFacadeBy(HomePage.INCREASE_GUESTS_ADULTS);
-            clicksOn(increaseGuestsButton);
+            WebElementFacade increaseAdultsButton = getWebElementFacadeBy(INCREASE_GUESTS_ADULTS);
+            clicksOn(increaseAdultsButton);
         }
+    }
 
+    public void increaseKids(Integer countKids) {
         for (int i = 0; i < countKids; i++) {
-            WebElementFacade increaseGuestsButton = getWebElementFacadeBy(HomePage.INCREASE_GUESTS_KIDS);
-            clicksOn(increaseGuestsButton);
+            WebElementFacade increaseKidsButton = getWebElementFacadeBy(INCREASE_GUESTS_KIDS);
+            clicksOn(increaseKidsButton);
         }
     }
 
     public void selectAdditionalGuests(BookingOptions options) {
-        clicksOn(HomePage.GUEST_PICKER_BTN);
-        increaseGuests(options.getAdults(), options.getKids());
-        // clicksOn(HomePage.SAVE_GUESTS_BTN);
-        clicksOn(HomePage.SUBMIT_BUTTON);
+        clicksOn(GUEST_PICKER_BTN);
+        increaseAdults(options.getAdults());
+        increaseKids(options.getKids());
+        clicksOn(SUBMIT_BUTTON);
     }
 
     public void setPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
@@ -172,6 +173,7 @@ public class BookingActions
         System.out.println("The element with stars >= " + String.valueOf(stars) + " not found");
     }
 
+    @Step
     public void selectTheFirstStayWithAtLeastGivenStar(Float stars) throws InterruptedException {
 
 
@@ -242,8 +244,18 @@ public class BookingActions
 
     }
 
-
+    @Step
     public void checkPrice() {
+
+//        currentPage.waitForRenderedElementsToBePresent(By.cssSelector("div[data-testid='book-it-default'] span[aria-hidden='true']"));
+//        String priceDisplayed = readsTextFrom(By.cssSelector("div[data-testid='book-it-default'] span[aria-hidden='true']"));
+
+//        currentPage.waitForRenderedElementsToBePresent(By.cssSelector("._ymq6as span span:nth-of-type(1)"));
+//        String priceDisplayed = readsTextFrom(By.cssSelector("._ymq6as span span:nth-of-type(1)"));
+
+/*        currentPage.waitForRenderedElementsToBePresent(By.cssSelector("div[data-testid='book-it-default'] span span:nth-of-type(1)"));
+        String priceDisplayed = readsTextFrom(By.cssSelector("div[data-testid='book-it-default'] span span:nth-of-type(1)"));*/
+
 
         currentPage.waitForRenderedElementsToBePresent(By.xpath("//div[@class='_80f7zz']//span[@class='_pgfqnw'] | //div[@class='_n4om66']//span[@class='_doc79r']"));
         String priceDisplayed = readsTextFrom(By.xpath("//div[@class='_80f7zz']//span[@class='_pgfqnw'] | //div[@class='_n4om66']//span[@class='_doc79r']"));

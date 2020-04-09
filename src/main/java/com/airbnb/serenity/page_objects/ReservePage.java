@@ -11,7 +11,10 @@ public class ReservePage extends PageObject {
 
     @FindBy(css = "div._ymq6as span span._pgfqnw")
     public WebElementFacade priceNights;
-    public static final By PRICE_NIGHTS = By.cssSelector("div._n4om66 span._1p0spma2");
+//    public static final By PRICE_NIGHTS = By.cssSelector("div._n4om66 span._1p0spma2");
+//    public static final By PRICE_NIGHTS = By.cssSelector("._ymq6as span span:nth-of-type(1)");
+    public static final By PRICE_NIGHTS = By.cssSelector("div[data-testid='book-it-default'] span[aria-hidden='true']");
+//    public static final By PRICE_NIGHTS = By.cssSelector("div[data-testid='book-it-default'] span span:nth-of-type(1)");
 
     @FindBy(css = "._ra05uc")
     public WebElementFacade sumWithoutTaxesNights;

@@ -5,20 +5,15 @@ import com.airbnb.serenity.page_objects.ReservePage;
 import com.airbnb.serenity.steps.libraries.BookingActions;
 
 import com.airbnb.serenity.steps.libraries.ReserveActions;
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import net.serenitybdd.core.annotations.findby.By;
 import net.thucydides.core.annotations.Steps;
 import org.assertj.core.api.SoftAssertions;
 
 import static com.airbnb.serenity.page_objects.HomePage.*;
 
-import java.text.NumberFormat;
-import java.text.ParseException;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import static com.airbnb.serenity.page_objects.ReservePage.*;
@@ -33,7 +28,8 @@ public class BookingStepsDefinitions {
     BookingActions dimo;
 
     @Steps
-    private ReserveActions reserveActions;
+    private ReserveActions anni;
+
     @Steps
     private ReservePage reservePage;
 
@@ -43,10 +39,11 @@ public class BookingStepsDefinitions {
         dimo.openPage();
     }
 
-    @Given("^s?he select english language plus currency \"([^\"]*)\"$")
+    @Given("^s?he select currency \"([^\"]*)\"$")
     public void heSelectCurrencyEuro(String currency) {
-        dimo.clicksOn(LANGUAGE_AND_CURRENCY_BUTTON);
-        dimo.clicksOn(CURRENCY_TABLE_LINK);
+            dimo.clicksOn(LANGUAGE_AND_CURRENCY_BUTTON);
+          // dimo.clicksOn(LANGUAGE_AND_CURRENCY_BUTTON_2);
+            dimo.clicksOn(CURRENCY_TABLE_LINK);
         dimo.setCurrency(currency);
     }
 
@@ -99,21 +96,24 @@ public class BookingStepsDefinitions {
     @Then("^he should see the reservation details in the widget$")
     public void heShouldSeeTheReservationDetailsInTheWidget() {
         //dimo.checkTheCalendarsDaysWithBlack(bookingOptions);
+        anni.checkDates(bookingOptions);
+        anni.checkGuests(bookingOptions);
     }
 
 
     @Then("^(?:.*) should see the correct sum according entered data$")
     public void userShouldSeeTheCorrectSumAccordingEnteredData() {
-        SoftAssertions softly = new SoftAssertions();
+      //  SoftAssertions softly = new SoftAssertions();
+
         dimo.checkPrice();
 //        pricePerNight = reserveActions.readsDoubleFrom(PRICE_NIGHTS);
 //        System.out.println(pricePerNight);
-
-        softly.assertThat(reserveActions.readsTextFrom(PRICE_NIGHTS))
+/*
+        softly.assertThat(anni.readsTextFrom(PRICE_NIGHTS))
                 .as("Price for 1 night")
                 .contains(String.valueOf(pricePerNight));
 
-/*        softly.assertThat(reserveActions.readsTextFrom(ADULTS))
+      softly.assertThat(reserveActions.readsTextFrom(ADULTS))
                 .as("Read text from adults")
                 .isEqualTo(this.bookingOptions.getAdults());
 
@@ -126,7 +126,7 @@ public class BookingStepsDefinitions {
 
         softly.assertThat(reserveActions.readsNumericValueFrom(TOTAL_PRICE_WITH_TAXES_NIGHTS))
                 .as("Total price with taxes")
-                .isEqualTo(this.bookingOptions.getTotalPrice());*/
-        softly.assertAll();
+                .isEqualTo(this.bookingOptions.getTotalPrice());
+        softly.assertAll(); */
     }
 }

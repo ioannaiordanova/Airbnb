@@ -5,7 +5,9 @@ import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.thucydides.core.annotations.DefaultUrl;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.FindAll;
 
+@DefaultUrl("https://bg.airbnb.com/rooms/9617736?location=Bali&adults=2&children=1&check_in=2020-04-15&check_out=2020-04-22&source_impression_id=p3_1586507762_lV3DafcSDIApqGSh")
 public class ReservePage extends PageObject {
 
     @FindBy(css = "div._ymq6as span span._pgfqnw")
@@ -42,9 +44,15 @@ public class ReservePage extends PageObject {
     //======================================================================================
     public static final By START_OF_TRIP_DATE = By.xpath("//div[@class='_1yy0mt98'] | //div[@class='_ykxqsm']");
 
-    public static final By GUESTS_LABEL = By.cssSelector("div.guest-label span");
+
+    public static final By GUESTS_LABEL = By.xpath("//div[@class='guest-label']//span | //label[@for='GuestPicker-book_it-trigger']//span");
     public static final By GUESTS_LABEL_2 = By.cssSelector("label span:not([class])");
     public static final By GUESTS_LABEL_3 =By.xpath("//label//span");
+
+    public static final By forLabel = By.cssSelector("*[for=]");
+
+    public static final By SCROOL_TO_ELEMENT = By.cssSelector("div[data-plugin-in-point-id=DESCRIPTION_DEFAULT] section button");
+    public static final By DATA_TEST_ID = By.cssSelector("div[data-testid=book-it-default]");
     public static final By NUMBER_ADULTS_DISPLAYED = By.cssSelector("div[aria-labelledby*=adults] *:not(svg)[aria-hidden=true]");
     public static final By NUMBER_CHILDREN_DISPLAYED = By.cssSelector("div[aria-labelledby*=children] *:not(svg)[aria-hidden=true]");
 

@@ -186,6 +186,11 @@ public class BaseActions {
         act.moveToElement(element).build().perform();
     }
 
+    public WebElementFacade returnParentWithGivenTag(WebElementFacade child,String parentTag){
+        By locatorParent = new By.ByXPath("./ancestor::"+parentTag+"[last()]");
+        return  child.find(locatorParent);
+    }
+
     public Float parseStringToFloat(String str) {
         return Float.valueOf(str);
     }

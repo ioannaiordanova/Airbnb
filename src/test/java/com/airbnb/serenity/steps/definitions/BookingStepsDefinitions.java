@@ -96,6 +96,7 @@ public class BookingStepsDefinitions {
     @Then("^he should see the reservation details in the widget$")
     public void heShouldSeeTheReservationDetailsInTheWidget() {
         //dimo.checkTheCalendarsDaysWithBlack(bookingOptions);
+
         anni.checkDates(bookingOptions);
         anni.checkGuests(bookingOptions);
     }

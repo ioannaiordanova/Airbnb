@@ -1,15 +1,12 @@
 package com.airbnb.serenity.steps.libraries;
 
 import com.airbnb.serenity.entities.BookingOptions;
-import com.airbnb.serenity.page_objects.HomePage;
 import com.airbnb.serenity.page_objects.ReservePage;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.thucydides.core.annotations.Step;
+import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.SoftAssertions;
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 import java.text.DecimalFormat;
@@ -17,7 +14,6 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -25,7 +21,6 @@ import java.util.regex.Pattern;
 
 
 import static com.airbnb.serenity.page_objects.ReservePage.GUESTS_LABEL;
-import static com.airbnb.serenity.page_objects.ReservePage.GUESTS_LABEL_2;
 
 public class ReserveActions
         extends BaseActions {
@@ -111,25 +106,59 @@ public class ReserveActions
 
     }
 
+    public String getPriceStripedFromCurrencySymbol(String price,String Symbol){
+        return price.replace(Symbol, StringUtils.EMPTY);
+    }
+
     @Step
-    public void checkPrice() {
+    public void checkPrice(BookingOptions options) {
 
-        currentPage.waitForRenderedElementsToBePresent(By.xpath("//div[@class='_80f7zz']//span[@class='_pgfqnw'] | //div[@class='_n4om66']//span[@class='_doc79r']"));
-        String priceDisplayed = readsTextFrom(By.xpath("//div[@class='_80f7zz']//span[@class='_pgfqnw'] | //div[@class='_n4om66']//span[@class='_doc79r']"));
+        //currentPage.waitForRenderedElementsToBePresent(By.xpath("//div[@class='_80f7zz']//span[@class='_pgfqnw'] | //div[@class='_n4om66']//span[@class='_doc79r']"));
+        //String priceDisplayed = readsTextFrom(By.xpath("//div[@class='_80f7zz']//span[@class='_pgfqnw'] | //div[@class='_n4om66']//span[@class='_doc79r']"));
+        JavascriptExecutor js = (JavascriptExecutor) resevrationPage.getDriver();
+        js.executeScript("return document.readyState").equals("complete");
+        resevrationPage.waitFor(resevrationPage.pricePerDay.get(0));
+        js.executeScript("arguments[0].scrollIntoView(true);", resevrationPage.pricePerDay.get(0));
 
-        NumberFormat numberFormat = new DecimalFormat("¤#.00", new DecimalFormatSymbols(Locale.GERMANY));
+        String priceDisplayed = readsTextFrom(resevrationPage.pricePerDay.get(0));
+
+        String code = options.getCurrency().substring(0,2);
+
+        NumberFormat numberFormat;
+        if (options.getCurrency().contentEquals("EUR"))
+        {
+            numberFormat = new DecimalFormat("#.00", new DecimalFormatSymbols(Locale.GERMANY));
+        }
+        else {
+            Locale localeForCurrency = new Locale("", code);
+            numberFormat = new DecimalFormat("#.00", new DecimalFormatSymbols(localeForCurrency));
+
+        }
+        priceDisplayed = getPriceStripedFromCurrencySymbol(priceDisplayed,numberFormat.getCurrency().getSymbol());
 
         // NumberFormat number = NumberFormat.getCurrencyInstance(Locale.GERMANY);
         System.out.println("Currency Symbol " + numberFormat.getCurrency().getSymbol());
         System.out.println("Currency Display Name " + numberFormat.getCurrency().getDisplayName());
-        Number num = 0;
-        try {
-            num = numberFormat.parse(priceDisplayed);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Can't convert " + priceDisplayed + " to Double!");
+
+        int unitPriceDisplayed = converToPrice(priceDisplayed,numberFormat);
+        System.out.println("Price for one day displayed: "+unitPriceDisplayed);
+
+
+        int row=1;
+        int priceForAllDays =0;
+        int finalPrice=0;
+        int totalPriceDisplayed = 0;
+
+        for (WebElementFacade priceElement:resevrationPage.listPrices) {
+           String priceOnTheRow  = getPriceStripedFromCurrencySymbol(priceElement.getText(),numberFormat.getCurrency().getSymbol());
+           int priceOnTheRowInt =  converToPrice(priceOnTheRow,numberFormat);
+
+
         }
-        System.out.println(num);
+
+        System.out.println("Base price for the days:"+priceForAllDays);
+        System.out.println("Final price for the days:"+finalPrice);
+        System.out.println("Total price displayed: "+totalPriceDisplayed);
     }
 
 

@@ -9,6 +9,7 @@ import net.serenitybdd.core.pages.WebElementFacade;
 import net.thucydides.core.annotations.Step;
 import org.openqa.selenium.interactions.Actions;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -230,5 +231,18 @@ public class BaseActions {
 
 
 
+    }
+
+    public static int converToPrice(String displayedPrice, NumberFormat numberFormat){
+        Number num = 0;
+        try {
+            num = numberFormat.parse(displayedPrice);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Can't convert " + displayedPrice + " to Double!");
+        }
+       // System.out.println(num);
+
+        return num.intValue();
     }
 }

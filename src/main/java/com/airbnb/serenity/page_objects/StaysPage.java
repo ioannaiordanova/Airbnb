@@ -18,7 +18,7 @@ extends PageObject {
 
     public static final By LIST_OF_STAYS = By.className(CLASS_OF_STAY);
     public static final String STARS_CSS = "span[role=img] span[aria-hidden=true]";
-    public static final String STARS_XPATH = "following::span[@role='img']/span[@aria-hidden='true']";
+    public static final String STARS_XPATH = "following-sibling::div//span[@role='img']/span[@aria-hidden='true']";//::div/span[@role='img']/span[@aria-hidden='true']
     public static final By NEXT_PAGE_ARROW = By.cssSelector("._i66xk8d > a");
     public static By priceForOneNight = By.cssSelector("span._1p7iugi");
 

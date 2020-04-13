@@ -197,7 +197,8 @@ public class BookingActions
                         startText = star1.getText();
 
                     } catch (Exception e) {
-                        System.out.println("Stay with number "+i+" has not a star");
+                        int number=i+1;
+                        System.out.println("Stay with number "+number+" has not a star");
                     }
 
                 if (star1 != null) {

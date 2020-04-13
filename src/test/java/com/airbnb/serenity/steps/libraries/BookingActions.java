@@ -8,6 +8,7 @@ import net.serenitybdd.core.pages.WebElementFacade;
 import net.thucydides.core.annotations.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -185,10 +186,11 @@ public class BookingActions
         int i = 0;
         while (nextPageExists) {
             i = 0;
-
+            staysPage.waitFor(ExpectedConditions.visibilityOfAllElementsLocatedBy( LIST_OF_STAYS));
             List<WebElementFacade> Stays = staysPage.listOfStays;
             while (i < Stays.size()) {
-              //  setElementInVisibleScreen(Stays.get(0));
+               //System.out.println("Stays here are: "+Stays.size());
+               //setElementInVisibleScreen(Stays.get(i));
                 WebElementFacade star1 = null;
                 String startText = "1";
 
@@ -215,7 +217,7 @@ public class BookingActions
             }
             WebElementFacade nextArrow = getWebElementFacadeBy(StaysPage.NEXT_PAGE_ARROW);
             if (nextArrow.isPresent()) {
-
+                System.out.println("Clicking on the next page...");
                 clicksOn(StaysPage.NEXT_PAGE_ARROW);
 
             } else {

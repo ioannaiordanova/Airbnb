@@ -8,19 +8,13 @@ import net.serenitybdd.core.pages.WebElementFacade;
 import net.thucydides.core.annotations.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
-import java.text.ParseException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+
 
 import static com.airbnb.serenity.page_objects.HomePage.*;
 import static com.airbnb.serenity.page_objects.MenuWithFilters.ROOMS_AND_BEDS_MENU_ITEM;
@@ -40,7 +34,6 @@ public class BookingActions
     }
 
     public void startSearchingWithPlace(String place) {
-        //options.getPlace();
         WebDriverWait wait = new WebDriverWait(currentPage.getDriver(), 5000); // 5 seconds timeout
         wait.until(ExpectedConditions.invisibilityOfElementLocated(HomePage.DIALOG));
 
@@ -228,17 +221,6 @@ public class BookingActions
         }
     }
 
-    public void checkTheCalendarsDaysWithBlack(BookingOptions options) {
-        int startDayTrip = options.getDayStartTrip();
-        String startTripMonth = formatMonth(options.getStartOfTripMonth());
-        int endDayTrip = options.getDayEndTrip();
-        String endTripMonth = formatMonth(options.getEndOfTripMonth());
-        assertThat(getWebElementFacadeBy(CALENDARS_TIME_PERIOD).getText())
-                .as("The start month has to be listed")
-                .containsIgnoringCase(startTripMonth);
-
-
-    }
 
 
 }

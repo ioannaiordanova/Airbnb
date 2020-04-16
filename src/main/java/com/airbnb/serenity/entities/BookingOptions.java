@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.Month;
 
 public class BookingOptions {
-    private String currency;
+
     private String place;
     LocalDate startDate;
     LocalDate endDate;
@@ -18,13 +18,14 @@ public class BookingOptions {
     private boolean jacuzzi=false;
     private float stars;
     private int days;
+    private int daysFromNow;
 
-    public String getCurrency() {
-        return currency;
+    public int getDaysFromNow() {
+        return daysFromNow;
     }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
+    public void setDaysFromNow(int daysFromNow) {
+        this.daysFromNow = daysFromNow;
     }
 
 
@@ -45,9 +46,9 @@ public class BookingOptions {
         this.startDate = startDate;
     }
 
-    public void setStartDate(Integer daysFromNow){
+    public void setStartDate(){
         LocalDate today = LocalDate.now();
-        LocalDate startDate =  today.plusDays(daysFromNow);
+        LocalDate startDate =  today.plusDays(this.daysFromNow);
         this.startDate = startDate;
     }
 
@@ -59,10 +60,10 @@ public class BookingOptions {
         this.endDate = endDate;
     }
 
-    public void setEndDate(Integer daysFromNow,Integer duration) {
+    public void setEndDate() {
         LocalDate today = LocalDate.now();
-        LocalDate endDate =  today.plusDays(daysFromNow);
-        endDate =  endDate.plusDays(duration);
+        LocalDate endDate =  today.plusDays(this.daysFromNow);
+        endDate =  endDate.plusDays(this.days);
         this.endDate = endDate;
     }
 
@@ -136,6 +137,7 @@ public class BookingOptions {
 
     public void setDays(int days) {
         this.days = days;
+
     }
 
     public Month getStartOfTripMonth(){

@@ -2,6 +2,7 @@ package com.airbnb.serenity.steps.libraries;
 
 import com.airbnb.serenity.entities.BookingOptions;
 import com.airbnb.serenity.page_objects.ReservePage;
+import com.airbnb.serenity.steps.definitions.BookingStepsDefinitions;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.thucydides.core.annotations.Step;
 import org.apache.commons.lang3.StringUtils;
@@ -211,7 +212,7 @@ public class ReserveActions
 
         String priceDisplayed = readsTextFrom(resevrationPage.pricePerDay.get(0));
 
-        NumberFormat numberFormat = getNumberFormat(options.getCurrency());
+        NumberFormat numberFormat = getNumberFormat(BookingStepsDefinitions.currency);
         priceDisplayed = getPriceStripedFromCurrencySymbol(priceDisplayed,numberFormat.getCurrency().getSymbol());
 
         // NumberFormat number = NumberFormat.getCurrencyInstance(Locale.GERMANY);

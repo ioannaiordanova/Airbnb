@@ -22,7 +22,7 @@ import static com.airbnb.serenity.utils.SetBookingOptionsByList.prepareBookingOp
 
 public class BookingStepsDefinitions {
 
-    private double pricePerNight;
+    public static String currency;
     private BookingOptions bookingOptions;
     @Steps
     BookingActions dimo;
@@ -40,43 +40,26 @@ public class BookingStepsDefinitions {
     }
 
     @Given("^s?he select currency \"([^\"]*)\"$")
-    public void heSelectCurrencyEuro(String currency) {
-        bookingOptions = new BookingOptions();
-        bookingOptions.setCurrency(currency);
+    public void heSelectCurrencyEuro(String data) {
+        currency = data;
         dimo.clicksOn(LANGUAGE_AND_CURRENCY_BUTTON);
-        // dimo.clicksOn(LANGUAGE_AND_CURRENCY_BUTTON_2);
         dimo.clicksOn(CURRENCY_TABLE_LINK);
         dimo.setCurrency(currency);
     }
 
-
-    @When("^(?:.*) search for a place where to stay in \"([^\"]*)\"$")
-    public void heSearchForAPlaceWhereToStayIn(String place) {
-
-        bookingOptions.setPlace(place);
-
+    @When("^John search for a place where to stay with the following options:$")
+    public void johnSearchForAPlaceWhereToStayWithTheFollowingOptions(List<BookingOptions> data) {
+        bookingOptions =data.get(0);
+        bookingOptions.setStartDate();
+        bookingOptions.setEndDate();
         dimo.startSearchingWithPlace(bookingOptions.getPlace());
-    }
-
-    @When("^s?he searching for vacation \"([^\"]*)\"-days trip after \"([^\"]*)\" days$")
-    public void heSearchingForVacationDaysTripAfterDays(Integer howLong, Integer daysFromNow) {
-        bookingOptions.setStartDate(daysFromNow);
-        bookingOptions.setEndDate(daysFromNow, howLong);
-        bookingOptions.setDays(howLong);
         dimo.applyDate(bookingOptions.getStartDate());
         dimo.applyDate(bookingOptions.getEndDate());
-    }
-
-
-    @When("^s?he search for number of people to accompany him:$")
-    public void heSearchForNumberOfPeopleToAccompanyHim(List<BookingOptions> guests) { //List<Map<String,Integer>>
-        bookingOptions.setKids(guests.get(0).getKids());
-        bookingOptions.setAdults(guests.get(0).getAdults());
-
         dimo.selectAdditionalGuests(bookingOptions);
 
 
     }
+
 
     @When("^(?:.*) has a requirements for his room:$")
     public void userHasARequirementsForHisRoom(List<Map<String, String>> requirements) {
@@ -97,8 +80,6 @@ public class BookingStepsDefinitions {
 
     @Then("^he should see the reservation details in the widget$")
     public void heShouldSeeTheReservationDetailsInTheWidget() {
-        //dimo.checkTheCalendarsDaysWithBlack(bookingOptions);
-
         anni.checkDates(bookingOptions);
         anni.checkGuests(bookingOptions);
     }
@@ -108,4 +89,6 @@ public class BookingStepsDefinitions {
     public void userShouldSeeTheCorrectSumAccordingEnteredData() {
         anni.checkPrice(bookingOptions);
     }
+
+
 }

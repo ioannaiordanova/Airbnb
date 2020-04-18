@@ -1,9 +1,7 @@
 package com.airbnb.serenity.steps.libraries;
 
 import com.airbnb.serenity.entities.BookingOptions;
-import com.airbnb.serenity.page_objects.ReservePage;
-import com.airbnb.serenity.steps.definitions.BookingStepsDefinitions;
-import io.vavr.collection.Array;
+import com.airbnb.serenity.page_objects.ShowReservationPage;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.thucydides.core.annotations.Step;
 import org.apache.commons.lang3.StringUtils;
@@ -22,13 +20,14 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 
-import static com.airbnb.serenity.page_objects.ReservePage.GUESTS_LABEL;
+import static com.airbnb.serenity.page_objects.ShowReservationPage.GUESTS_LABEL;
 
-public class ReserveActions
+public class ShowReservationActions
         extends BaseActions {
-    private ReservePage resevrationPage;
+    private ShowReservationPage resevrationPage;
 
     private  NumberFormat numberFormat;
+    public static String currency = "EUR";
 
     public void openPage(){
         resevrationPage.open();
@@ -38,12 +37,12 @@ public class ReserveActions
     @Step("Assert the dates")
     public void checkDates(BookingOptions options){
 
-        List<WebElementFacade> tripDates =  getAllWebElementFacadeABy(ReservePage.START_OF_TRIP_DATE);
+        List<WebElementFacade> tripDates =  getAllWebElementFacadeABy(ShowReservationPage.START_OF_TRIP_DATE);
         String startOfTripDate=tripDates.get(0).getText();
         String endOfTripDateDisplayed =  tripDates.get(1).getText();
 
-        LocalDate startDate = convertStringToDate("M/d/yyyy",startOfTripDate);
-        LocalDate endDate = convertStringToDate("M/d/yyyy",endOfTripDateDisplayed);
+        LocalDate startDate = stringToDate("M/d/yyyy",startOfTripDate);
+        LocalDate endDate = stringToDate("M/d/yyyy",endOfTripDateDisplayed);
 
 
         SoftAssertions softly = new SoftAssertions();
@@ -73,8 +72,8 @@ public class ReserveActions
 
 
         clicksOn(GUESTS_LABEL);
-        String adultsDisplayed = readsTextFrom(getWebElementFacadeBy(ReservePage.NUMBER_ADULTS_DISPLAYED));
-        String kidsDisplayed =readsTextFrom(getWebElementFacadeBy(ReservePage.NUMBER_CHILDREN_DISPLAYED));
+        String adultsDisplayed = readsTextFrom(getWebElementFacadeBy(ShowReservationPage.NUMBER_ADULTS_DISPLAYED));
+        String kidsDisplayed =readsTextFrom(getWebElementFacadeBy(ShowReservationPage.NUMBER_CHILDREN_DISPLAYED));
         System.out.println("Adults "+adultsDisplayed+" Kids: "+kidsDisplayed);
 
 
@@ -99,7 +98,7 @@ public class ReserveActions
     }
 
     public int getDiscount(){
-        return getSumWithoutTheLast(getPricesList(resevrationPage.discountPrice))+getLastFromTheList(getPricesList(resevrationPage.discountPrice));
+        return getSumOfTheList(getPricesList(resevrationPage.discountPrice));
         }
 
 
@@ -120,26 +119,26 @@ public class ReserveActions
 
     }
 
-    public int getFirstFromTheList(List<String>  pricesList){
-        System.out.println("Price for a day*days: "+pricesList.get(0));
-        if (pricesList.size()>0)  return Integer.parseInt(pricesList.get(0));
+    public int getFirstFromTheList(List<String>  List){
+        System.out.println("Price for a day*days: "+List.get(0));
+        if (List.size()>0)  return Integer.parseInt(List.get(0));
                                    else return 0;
 
     }
 
 
-    public int getSumWithoutTheLast(List<String>  pricesList){
+    public int getSumOfTheList(List<String>  List){
 
-        int finalPrice =0;
-        for (int k=0;k<pricesList.size()-1;k++) finalPrice = finalPrice+Integer.parseInt(pricesList.get(k));
+        int sum =0;
+        for (int k=0;k<List.size();k++) sum = sum+Integer.parseInt(List.get(k));
 
-        return finalPrice;
+        return sum;
         }
 
-    public int getLastFromTheList(List<String> listPrices){
+    public int getLastFromTheList(List<String> list){
 
-        if (listPrices.size()>1)
-         return Integer.parseInt(listPrices.get(listPrices.size()-1));
+        if (list.size()>1)
+         return Integer.parseInt(list.get(list.size()-1));
         else return 0;
 
     }
@@ -159,7 +158,7 @@ public class ReserveActions
         js.executeScript("arguments[0].scrollIntoView(true);", resevrationPage.pricePerDay.get(0));
 
 
-        numberFormat = getNumberFormat(BookingStepsDefinitions.currency);
+        numberFormat = getNumberFormat(currency); //BookingStepsDefinitions.currency
         int unitPriceDisplayed =Integer.parseInt(getPriceStripedFromCurrencySymbol(readsTextFrom(resevrationPage.pricePerDay.get(0))));
 
         System.out.println("Currency Symbol " + numberFormat.getCurrency().getSymbol());
@@ -174,7 +173,7 @@ public class ReserveActions
                 .isEqualTo(options.getDays()*unitPriceDisplayed);
         softly.assertThat(getLastFromTheList(getPricesList(resevrationPage.listPrices)))
                 .as("Total price to be as expected:")
-                .isEqualTo(getSumWithoutTheLast(getPricesList(resevrationPage.listPrices))+getDiscount());
+                .isEqualTo(getSumOfTheList(getPricesList(resevrationPage.listPrices))-getLastFromTheList(getPricesList(resevrationPage.listPrices))+getDiscount());
         softly.assertAll();
 
 

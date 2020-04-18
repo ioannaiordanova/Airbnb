@@ -28,9 +28,7 @@ public class BookingActions
     private StaysPage staysPage;
 
 
-    public void openPage() {
-        homePage.open();
-    }
+
 
     public void startSearchingWithPlace(String place) {
         WebDriverWait wait = new WebDriverWait(currentPage.getDriver(), 5000); // 5 seconds timeout

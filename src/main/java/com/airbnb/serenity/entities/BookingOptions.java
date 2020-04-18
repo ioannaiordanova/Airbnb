@@ -7,8 +7,6 @@ import java.time.Month;
 public class BookingOptions {
 
     private String place;
-    LocalDate startDate;
-    LocalDate endDate;
     private int adults;
     private int kids;
     private BigDecimal minPrice;
@@ -39,33 +37,21 @@ public class BookingOptions {
 
 
     public LocalDate getStartDate() {
+        LocalDate today = LocalDate.now();
+        LocalDate startDate =  today.plusDays(this.daysFromNow);
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
 
-    public void setStartDate(){
-        LocalDate today = LocalDate.now();
-        LocalDate startDate =  today.plusDays(this.daysFromNow);
-        this.startDate = startDate;
-    }
 
     public LocalDate getEndDate() {
-        return endDate;
-    }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public void setEndDate() {
         LocalDate today = LocalDate.now();
         LocalDate endDate =  today.plusDays(this.daysFromNow);
-        endDate =  endDate.plusDays(this.days);
-        this.endDate = endDate;
+        return  endDate.plusDays(this.days);
+
     }
+
 
     public int getAdults() {
         return adults;

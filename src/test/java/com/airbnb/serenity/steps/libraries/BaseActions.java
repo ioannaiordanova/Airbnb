@@ -207,7 +207,7 @@ public class BaseActions {
     }
 
 
-    public LocalDate convertStringToDate(String format, String dateInString){
+    public LocalDate stringToDate(String format, String dateInString){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
 
 
@@ -217,18 +217,7 @@ public class BaseActions {
 
     }
 
-    public static int converToPrice(String displayedPrice, NumberFormat numberFormat){
-        Number num = 0;
-        try {
-            num = numberFormat.parse(displayedPrice);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Can't convert " + displayedPrice + " to Double!");
-        }
-       // System.out.println(num);
 
-        return num.intValue();
-    }
 
 
 }

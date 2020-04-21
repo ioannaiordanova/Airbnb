@@ -23,13 +23,7 @@ public class HomeActions
         }
     }
 
-    @Step
-    public void setCurrencyStep(){
-        clicksOn(LANGUAGE_AND_CURRENCY_BUTTON);
-        clicksOn(CURRENCY_TABLE_LINK);
-        ShowReservationActions.currency = "EUR";
-        setCurrency(ShowReservationActions.currency);
-    }
+
 
 
 

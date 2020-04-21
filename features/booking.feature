@@ -14,4 +14,3 @@ Feature: Booking
       | 50        | 100       | 1         | Air conditioner,Jacuzzi |
     And he choose the first with at least 5 stars
     Then he should see his reservation details
-	
